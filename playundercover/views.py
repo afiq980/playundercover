@@ -192,15 +192,15 @@ def turn_reveal_single(request):
         played_names = []
 
     next_player = get_next_player(cuw_list, played_names)
-    played_names.append(next_player)
 
     if next_player is not None:
+        played_names.append(next_player)
         return render(request, 'turn-reveal.html', {"next_player": next_player,
                                                     "cuw_list": cuw_list,
                                                     "played_names": played_names})
     else:
-        return render(request, 'index.html', {"player_turns": played_names,
-                                              "cuw_list": cuw_list})
+        return render(request, 'player-elim.html', {"player_turns": played_names,
+                                                    "cuw_list": cuw_list})
 
 
 
@@ -259,27 +259,28 @@ def get_next_player(cuw_list, played_names):
         return None
 
 
-def player_elim_choose(request):
-    return render(request, 'player-elim.html', {"player_turns": request.POST['player_turns'],
-                                                "uw_list": request.POST['uw_list']})
-
-
 def player_elim(request):
-    player_list_str = request.POST['player_turns']
-    player_list = ast.literal_eval(str(player_list_str.encode('utf-8')))
-    player_to_elim = request.POST['player_to_elim']
-    uw_list_str = request.POST['uw_list']
-    uw_list = ast.literal_eval(str(uw_list_str.encode('utf-8')))
+    players_to_elim = request.POST.getlist('players_to_elim')
+    cuw_list_str = request.POST['cuw_list']
+    cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
 
-    player_list.remove(player_to_elim)
+    # remove the names of players to elim
+    for player_to_elim in players_to_elim:
+        for cuw_sub_list in cuw_list:
+            try:
+                cuw_sub_list.remove(player_to_elim)
+            except:
+                pass
 
-    if len(player_list) == 0:
+    if len(cuw_list[1]) == 0 and len(cuw_list[2]) == 0:
+        # END GAME UW wins
+        return render(request, 'index.html', {})
+    elif len(cuw_list[0]) == 0:
+        # END GAME C wins
         return render(request, 'index.html', {})
     else:
-        for uw in uw_list:
-            if uw in player_list:
-                shuffle(player_list)
-                return render(request, 'turn-reveal-group.html', {"player_turns": player_list,
-                                                            "uw_list": request.POST['uw_list']})
-        else:
-            return render(request, 'index.html', {})
+        next_player = next_player = get_next_player(cuw_list, [])
+        played_names = [next_player]
+        return render(request, 'turn-reveal.html', {"next_player": next_player,
+                                                    "cuw_list": cuw_list,
+                                                    "played_names": played_names})

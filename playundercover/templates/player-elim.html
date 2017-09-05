@@ -12,6 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no"/>
 
 <style>
+
     html,
     body {
         height: 100%;
@@ -78,22 +79,17 @@
     }
 
     .btn {
-        width: 70%;
-        margin-bottom: 32px;
+        width: 100%;
         letter-spacing: 5px;
         font-family: Open Sans, sans-serif;
-    }
-
-    .qpButton:hover {
-        background: #d9b08c;
-        height: 91px;
-        border: 1px solid #2c3531;
-        color: #2c3531;
-        font-size: 24px;
+        background: #116466;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
     }
 
     .header-container {
-        width: 90%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
@@ -109,6 +105,38 @@
         text-align: center;
         text-align: justify;
         text-justify: distribute;
+    }
+
+    .revealButton {
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
+    }
+
+    .revealButton:hover {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #116466;
+        color: #116466;
+        font-size: 20px;
+    }
+
+    .nextButton {
+        background: #2c3531;
+        height: 91px;
+        border: 1px solid #d9b08c;
+        color: #d9b08c;
+        font-size: 24px;
+    }
+
+    .nextButton:hover {
+        background: #d9b08c;
+        height: 91px;
+        border: 1px solid #2c3531;
+        color: #2c3531;
+        font-size: 24px;
     }
 
 </style>
@@ -133,93 +161,78 @@
         </div>
     </nav><!-- TOP BAR -->
 
-    <!-- LOG IN/REG -->
-    <div class="row green-container">
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1"
-                    aria-expanded="false" aria-controls="collapseExample">
-                NAME
-            </button>
-        </p>
-        <div class="collapse" id="collapseExample1">
-            <div class="card card-block">
-                WORD REVEALED
-            </div>
-        </div>
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                {{ player_turns }}
-            </button>
-        </p>
-
-        {{ player_turns | safe}}
-
-        <form action="/player-elim/" method="post"> {% csrf_token %}
-            <input id="data" type="hidden" name="player_turns" value="{{ player_turns }}">
-{#            <input id="data" type="hidden" name="player_to_elim" value="{{ player_to_elim }}">#}
-{#            <input id="data" type="hidden" name="player_to_elim" value="mohamed">#}
-            <input id="data" type="hidden" name="uw_list" value="{{ uw_list }}">
-
-            <input type="text" class="form-control" id="data" placeholder="KILL" name="player_to_elim"
-                       style='font-family: Open Sans, sans-serif;height: 52px; width: 70%; margin: 0 auto;'>
-
-            <!-- NEXT BUTTON -->
-            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px; margin-bottom: 32px;">NEXT PLAYER
-            </button><!-- NEXT BUTTON -->
-        </form>
-
-    </div><!-- LOG IN/REG --
-
-        <!-- FEEDBACK -->
+    <!-- CLICK TO REVEAL WORDS -->
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            UNDERCOVER
-            {{ player_assignment|safe }}
-
-            {{ word_assignment|safe }}
+            TO REVEAL OR NOT
         </div>
 
-        <div class="row center-block text-container" style="line-height: 200%;">
-            Meet the Team <br>
-            Open Source Libraries <br>
-            Feedback <br>
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+            You can choose to reveal a player's identity or continue the game without revealing anyone's identity. Click
+            player's name below to reveal.
+        </div>
 
-            <form>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="feedback" placeholder="Click to type"
-                           style='font-family: Open Sans, sans-serif;'>
-                </div>
+        <div class='row btn-group-vertical center-block' style='width: 85%;' data-toggle='buttons'>
+            <form id="elim_form" action="/player-elim/" method="post">{% csrf_token %}
+                <input id="data" type="hidden" name="cuw_list" value="{{ cuw_list }}">
+                <p id="Players"></p>
             </form>
-
-            <button type="button" class=" btn btn-primary btn-responsive submitButton"
-                    style="width: 40%; height: 32px;">SUBMIT
-            </button>
-
         </div>
 
-    </div> <!-- FEEDBACK -->
+        <!-- CLICK TO REVEAL WORDS -->
+    </div>
 
+
+    <!-- START BUTTON -->
+    <div class="row black-container">
+
+        <!-- DO NOT DELETE -->
+
+            <!-- DO NOT DELETE -->
+
+            <button type="submit" form="elim_form" value="send form" class="center-block btn btn-primary btn-responsive nextButton"
+                    style="margin-top: 32px; width: 85%;">CONTINUE
+            </button><!-- START BUTTON -->
+
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; ">
+            Click here to restart game.
+        </div>
+
+    </div>
 </div>
-</div>
+
 
 <script>
-    $(document).ready(function () {
 
-        $(".add-more").click(function () {
-            var html = $(".copy").html();
-            $(".after-add-more").after(html);
-        });
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
 
-        $("body").on("click", ".remove", function () {
-            $(this).parents(".control-group").remove();
-        });
+    var playerAssignment = {{cuw_list|safe}};
+    var textList = [];
+    for (var i = 0; i < playerAssignment.length; i++) {
+        for (var j = 0; j < playerAssignment[i].length; j++) {
+            var text = "";
+            text += "<label class='btn btn-primary'><input type='checkbox' autocomplete='off' name = 'players_to_elim' value='" + playerAssignment[i][j] + "'> <span style='font-size:24px;'>" + playerAssignment[i][j] + "</span></label>";
+            textList.push(text);
+        }
+    }
 
-    });
+    textList = shuffle(textList);
+    var finalText = textList.join('');
+    document.getElementById("Players").innerHTML = finalText;
+
 </script>
 
 </body>

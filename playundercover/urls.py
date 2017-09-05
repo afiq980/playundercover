@@ -27,6 +27,5 @@ urlpatterns = [
     url(r'^quickplay/', views.quickplay, name='quickplay'),
     url(r'^register-players/', views.register_players, name='register_players'),
     url(r'^turn-reveal/', views.turn_reveal_single, name='turn_reveal'),
-    url(r'^player-elim-choose/', views.player_elim_choose, name='player_elim_choose'),
     url(r'^player-elim/', views.player_elim, name='player_elim'),
 ]

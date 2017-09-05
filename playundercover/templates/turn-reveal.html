@@ -158,9 +158,9 @@
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            PLAYER'S TURN
-            {{ played_names | safe}}
-            {{ cuw_list | safe}}
+            PLAYER'S TURN<br>
+            {{ cuw_list }}<br>
+            {{ played_names }}
         </div>
 
         <div class="row center-block text-container"
@@ -174,8 +174,8 @@
             {{ next_player }}
         </div>
 
-        <!-- TURN -->
-    </div>
+
+    </div><!-- TURN -->
 
 
         <!-- NEXT BUTTON -->
@@ -195,39 +195,6 @@
 
 
         <script>
-
-            function shuffle(array) {
-                var currentIndex = array.length, temporaryValue, randomIndex;
-                while (0 !== currentIndex) {
-                    randomIndex = Math.floor(Math.random() * currentIndex);
-                    currentIndex -= 1;
-                    temporaryValue = array[currentIndex];
-                    array[currentIndex] = array[randomIndex];
-                    array[randomIndex] = temporaryValue;
-                }
-                return array;
-            }
-
-            var wordAssignment = {{word_assignment|safe}};
-            var playerAssignment = {{player_assignment|safe}};
-            var textList = [];
-            for (var i = 0; i < playerAssignment.length; i++) {
-                for (var j = 0; j < playerAssignment[i].length; j++) {
-                    var text = "";
-                    text += "<p><button class='center-block btn btn-primary revealButton' type='button' data-toggle='collapse' data-target='#" + i + j + "' aria-expanded='false' aria-controls='collapseExample'>";
-                    text += playerAssignment[i][j];
-                    text += "</button></p><div class='collapse role no-transition' id='" + i + j + "'><div class='card card-block text-container' style='font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;'>";
-                    text += wordAssignment[i][j];
-                    text += "</div></div>";
-                    textList.push(text);
-                }
-            }
-
-            textList = shuffle(textList);
-            var finalText = textList.join('');
-
-            document.getElementById("Reveal").innerHTML = finalText;
-
 
             $(document).ready(function () {
 
