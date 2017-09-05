@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <style>
 
@@ -165,13 +165,12 @@
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            TO REVEAL OR NOT
+            PLAYER ELIMINATION
         </div>
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
-            You can choose to reveal a player's identity or continue the game without revealing anyone's identity. Click
-            player's name below to reveal.
+            You may choose to eliminate none, 1 or more than 1 player. Select the player name(s) to eliminate and click "Eliminate".
         </div>
 
         <div class='row btn-group-vertical center-block' style='width: 85%;' data-toggle='buttons'>
@@ -193,7 +192,7 @@
             <!-- DO NOT DELETE -->
 
             <button type="submit" form="elim_form" value="send form" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px; width: 85%;">CONTINUE
+                    style="margin-top: 32px; width: 85%;">ELIMINATE
             </button><!-- START BUTTON -->
 
         <div class="row center-block text-container"
@@ -224,7 +223,7 @@
     for (var i = 0; i < playerAssignment.length; i++) {
         for (var j = 0; j < playerAssignment[i].length; j++) {
             var text = "";
-            text += "<label class='btn btn-primary'><input type='checkbox' autocomplete='off' name = 'players_to_elim' value='" + playerAssignment[i][j] + "'> <span style='font-size:24px;'>" + playerAssignment[i][j] + "</span></label>";
+            text += "<label class='btn btn-primary' style='margin-bottom: 20px;'><input type='checkbox' autocomplete='off' name = 'players_to_elim' value='" + playerAssignment[i][j] + "'> <span style='font-size:24px;'>" + playerAssignment[i][j] + "</span></label>";
             textList.push(text);
         }
     }

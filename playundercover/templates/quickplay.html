@@ -140,6 +140,8 @@
         <!-- ADD NAMES -->
         <div class="row green-container">
 
+            <p id="Error"></p>
+
             <div class="row center-block header-container">
                 PLAYER NAMES
             </div>
@@ -240,18 +242,26 @@
 </div>
 
 <script>
-    $(document).ready(function () {
 
+    $(document).ready(function () {
         $(".add-more").click(function () {
             var html = $(".copy").html();
             $(".after-add-more").after(html);
         });
-
         $("body").on("click", ".remove", function () {
             $(this).parents(".control-group").remove();
         });
-
     });
+
+    var error = "{{ error_message | safe }}";
+    var text = "";
+    if(error.length > 0){
+        text += "<div class='alert alert-success' style='border-radius: 0 !important; border: 0; background: #000000; color: #ffffff; text-align: center;'>";
+        text += "<strong>" + error + "</strong>";
+        text += "</div>";
+    }
+    document.getElementById("Error").innerHTML = text;
+
 </script>
 
 </body>

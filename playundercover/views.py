@@ -98,6 +98,22 @@ def register_players(request):
 
     player_names = player_names[:-1] # because last item is an extra blank item in list
 
+    if len(player_names) != len(set(player_names)):
+        error_message = "Player names must be unique."
+        return render(request, 'quickplay.html', {"error_message": error_message})
+
+    if int(number_of_u) + int(number_of_w) >= len(player_names):
+        error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
+        return render(request, 'quickplay.html', {"error_message":error_message})
+
+    if int(number_of_u) + int(number_of_w) == 0:
+        error_message = "There must be at least 1 of either Undercover or Mr White."
+        return render(request, 'quickplay.html', {"error_message":error_message})
+
+    if int(number_of_u) < 0 or  int(number_of_w) < 0:
+        error_message = "Number of Undercovers and/or Mr White cannot be negative."
+        return render(request, 'quickplay.html', {"error_message":error_message})
+
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
 
