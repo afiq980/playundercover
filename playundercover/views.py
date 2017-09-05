@@ -2,6 +2,7 @@ import re
 import random
 from random import shuffle
 import ast
+import json
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.shortcuts import redirect
@@ -98,6 +99,9 @@ def register_players(request):
 
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
+
+    player_assignment = json.dumps(player_assignment)
+    word_assignment = json.dumps(word_assignment)
 
     return render(request, 'word-reveal.html', {"player_assignment":player_assignment,
                                                 "word_assignment":word_assignment})

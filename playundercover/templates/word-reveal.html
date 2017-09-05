@@ -12,6 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no"/>
 
 <style>
+
     html,
     body {
         height: 100%;
@@ -79,21 +80,12 @@
 
     .btn {
         width: 70%;
-        margin-bottom: 32px;
         letter-spacing: 5px;
         font-family: Open Sans, sans-serif;
     }
 
-    .qpButton:hover {
-        background: #d9b08c;
-        height: 91px;
-        border: 1px solid #2c3531;
-        color: #2c3531;
-        font-size: 24px;
-    }
-
     .header-container {
-        width: 90%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
@@ -109,6 +101,66 @@
         text-align: center;
         text-align: justify;
         text-justify: distribute;
+    }
+
+    .revealButton {
+        background: #116466;
+        height: 52px;
+        color: #d1e8e2;
+        font-size: 20px;
+        border: 1px solid #d1e8e2;
+    }
+
+    .revealButton:hover {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #116466;
+        font-size: 20px;
+    }
+
+    .revealButton:focus {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #116466;
+        font-size: 20px;
+    }
+
+    .nextButton {
+        background: #2c3531;
+        height: 91px;
+        border: 1px solid #d9b08c;
+        color: #d9b08c;
+        font-size: 24px;
+    }
+
+    .nextButton:hover {
+        background: #d9b08c;
+        height: 91px;
+        border: 1px solid #2c3531;
+        color: #2c3531;
+        font-size: 24px;
+    }
+
+    .role {
+        height: 42px;
+        width: 50%;
+        border-top: #2e9aff 0px solid;
+        border-bottom: 1px solid #d1e8e2;
+        border-left: #2e9aff 0px solid;
+        border-right: #2e9aff 0px solid;
+        margin: 0 auto;
+        margin-bottom: 32px;
+        line-height: 40px;
+    }
+
+    .no-transition {
+        -webkit-transition: height 0.01s;
+        -moz-transition: height 0.01s;
+        -ms-transition: height 0.01s;
+        -o-transition: height 0.01s;
+        transition: height 0.01s;
     }
 
 </style>
@@ -133,78 +185,88 @@
         </div>
     </nav><!-- TOP BAR -->
 
-    <!-- LOG IN/REG -->
-    <div class="row green-container">
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1"
-                    aria-expanded="false" aria-controls="collapseExample">
-                NAME
-            </button>
-        </p>
-        <div class="collapse" id="collapseExample1">
-            <div class="card card-block">
-                WORD REVEALED
-            </div>
-        </div>
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                NAME
-            </button>
-        </p>
-        <div class="collapse" id="collapseExample">
-            <div class="card card-block">
-                WORD REVEALED
-            </div>
-        </div>
-
-        <form action="/turn-reveal/" method="post"> {% csrf_token %}
-            <input id="data" type="hidden" name="player_assignment" value="{{ player_assignment }}">
-
-            <!-- NEXT BUTTON -->
-            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px; margin-bottom: 32px;">NEXT PLAYER
-            </button><!-- NEXT BUTTON -->
-        </form>
-
-
-    </div><!-- LOG IN/REG --
-
-        <!-- FEEDBACK -->
+    <!-- CLICK TO REVEAL WORDS -->
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            UNDERCOVER
-            {{ player_assignment|safe }}
-            {{ word_assignment|safe }}
+            ASSIGNED WORDS
         </div>
 
-        <div class="row center-block text-container" style="line-height: 200%;">
-            Meet the Team <br>
-            Open Source Libraries <br>
-            Feedback <br>
-
-            <form>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="feedback" placeholder="Click to type"
-                           style='font-family: Open Sans, sans-serif;'>
-                </div>
-            </form>
-
-            <button type="button" class=" btn btn-primary btn-responsive submitButton"
-                    style="width: 40%; height: 32px;">SUBMIT
-            </button>
-
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+            Click your name below in private to see your words.
         </div>
 
-    </div> <!-- FEEDBACK -->
+        <p id="Reveal"></p>
+        <!-- CLICK TO REVEAL WORDS -->
 
+    </div>
+
+
+    <!-- START BUTTON -->
+    <div class="row black-container">
+
+        <!-- DO NOT DELETE -->
+        <form action="/turn-reveal/" method="post"> {% csrf_token %}
+            <input id="data" type="hidden" name="player_assignment" value="{{ player_assignment }}">
+            <!-- DO NOT DELETE -->
+
+            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
+                    style="margin-top: 32px;">START
+            </button><!-- START BUTTON -->
+
+            <div class="row center-block text-container"
+                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; ">
+                Click here for a new set of words.
+            </div>
+        </form>
+
+    </div>
 </div>
-</div>
+
 
 <script>
+
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    var wordAssignment = {{word_assignment|safe}};
+    var playerAssignment = {{player_assignment|safe}};
+    var textList = [];
+    for (var i = 0; i < playerAssignment.length; i++) {
+        for (var j = 0; j < playerAssignment[i].length; j++) {
+            var text = "";
+            text += "<p><button class='center-block btn btn-primary revealButton' type='button' data-toggle='collapse' data-target='#" + i + j + "' aria-expanded='false' aria-controls='collapseExample'>";
+            text += playerAssignment[i][j];
+            text += "</button></p><div class='collapse role no-transition' id='" + i + j + "'><div class='card card-block text-container' style='font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;'>";
+            text += wordAssignment[i][j];
+            text += "</div></div>";
+            textList.push(text);
+        }
+    }
+
+    textList = shuffle(textList);
+    var finalText = textList.join('');
+
+    document.getElementById("Reveal").innerHTML = finalText;
+
+
     $(document).ready(function () {
 
         $(".add-more").click(function () {
