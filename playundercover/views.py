@@ -3,6 +3,7 @@ import random
 from random import shuffle
 import ast
 import json
+from copy import deepcopy
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.shortcuts import redirect
@@ -181,6 +182,28 @@ def get_pair(request, difficulty_level, season_name):
         return pair_list[random.randint(0, len(pair_list) - 1)]
 
 
+def turn_reveal_single(request):
+    cuw_list_str = request.POST['cuw_list']
+    cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
+    try:
+        played_names_str = request.POST['played_names']
+        played_names = ast.literal_eval(str(played_names_str.encode('utf-8')))
+    except:
+        played_names = []
+
+    next_player = get_next_player(cuw_list, played_names)
+    played_names.append(next_player)
+
+    if next_player is not None:
+        return render(request, 'turn-reveal.html', {"next_player": next_player,
+                                                    "cuw_list": cuw_list,
+                                                    "played_names": played_names})
+    else:
+        return render(request, 'index.html', {"player_turns": played_names,
+                                              "cuw_list": cuw_list})
+
+
+
 def turn_reveal(request):
     cuw_list_str = request.POST['player_assignment']
     cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
@@ -191,8 +214,12 @@ def turn_reveal(request):
 
     played_names = get_player_turns(cuw_list)
 
-    return render(request, 'turn-reveal.html', {"player_turns": played_names,
-                                                "uw_list": uw_list})
+    if played_names is not None:
+        return render(request, 'turn-reveal-group.html', {"player_turns": played_names,
+                                                          "uw_list": uw_list})
+    else:
+        return render(request, 'index.html', {"player_turns": played_names,
+                                                          "uw_list": uw_list})
 
 
 def get_player_turns(cuw_list):
@@ -201,6 +228,8 @@ def get_player_turns(cuw_list):
     played_names = []
     while len(played_names) != total_number_of_players:
         next_player = get_next_player(cuw_list, played_names)
+        if next_player is None:
+            return None
         played_names.append(next_player)
 
     return played_names
@@ -208,10 +237,11 @@ def get_player_turns(cuw_list):
 
 # returns name of next player
 def get_next_player(cuw_list, played_names):
+    cuw_list_copy = deepcopy(cuw_list)
 
     # remove the names of those that have played
     for played_name in played_names:
-        for cuw_sub_list in cuw_list:
+        for cuw_sub_list in cuw_list_copy:
             try:
                 cuw_sub_list.remove(played_name)
             except:
@@ -219,12 +249,14 @@ def get_next_player(cuw_list, played_names):
 
     # civilians are a few times more likely than undercover and whites to play next. White is least likely to play next.
     choose_list = []
-    choose_list.extend(2 * cuw_list[0])
-    choose_list.extend(cuw_list[1])
-    choose_list.extend(cuw_list[2])
-    decider = random.randint(0, len(choose_list) - 1)
-
-    return choose_list[decider]
+    choose_list.extend(2 * cuw_list_copy[0])
+    choose_list.extend(cuw_list_copy[1])
+    choose_list.extend(cuw_list_copy[2])
+    if len(choose_list) > 0:
+        decider = random.randint(0, len(choose_list) - 1)
+        return choose_list[decider]
+    else:
+        return None
 
 
 def player_elim_choose(request):
@@ -247,7 +279,7 @@ def player_elim(request):
         for uw in uw_list:
             if uw in player_list:
                 shuffle(player_list)
-                return render(request, 'turn-reveal.html', {"player_turns": player_list,
+                return render(request, 'turn-reveal-group.html', {"player_turns": player_list,
                                                             "uw_list": request.POST['uw_list']})
         else:
             return render(request, 'index.html', {})

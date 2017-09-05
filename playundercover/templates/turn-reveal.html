@@ -9,9 +9,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <style>
+
     html,
     body {
         height: 100%;
@@ -79,21 +80,12 @@
 
     .btn {
         width: 70%;
-        margin-bottom: 32px;
         letter-spacing: 5px;
         font-family: Open Sans, sans-serif;
     }
 
-    .qpButton:hover {
-        background: #d9b08c;
-        height: 91px;
-        border: 1px solid #2c3531;
-        color: #2c3531;
-        font-size: 24px;
-    }
-
     .header-container {
-        width: 90%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
@@ -110,6 +102,35 @@
         text-align: justify;
         text-justify: distribute;
     }
+
+    .nextButton {
+        background: #2c3531;
+        height: 91px;
+        border: 1px solid #d9b08c;
+        color: #d9b08c;
+        font-size: 24px;
+    }
+
+    .nextButton:hover {
+        background: #d9b08c;
+        height: 91px;
+        border: 1px solid #2c3531;
+        color: #2c3531;
+        font-size: 24px;
+    }
+
+    .text2-container {
+        background: #ffffff;
+        width: 80%;
+        font-size: 20px;
+        text-align: center;
+        line-height: 50px;
+        height: 52px;
+        width: 70%;
+        letter-spacing: 5px;
+        font-family: Open Sans, sans-serif;
+    }
+
 
 </style>
 
@@ -133,90 +154,94 @@
         </div>
     </nav><!-- TOP BAR -->
 
-    <!-- LOG IN/REG -->
-    <div class="row green-container">
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1"
-                    aria-expanded="false" aria-controls="collapseExample">
-                NAME
-            </button>
-        </p>
-        <div class="collapse" id="collapseExample1">
-            <div class="card card-block">
-                WORD REVEALED
-            </div>
-        </div>
-
-        <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                {{ player_turns }}
-            </button>
-        </p>
-
-        {{ player_turns | safe}}
-        {{ uw_list | safe }}
-
-        <form action="/player-elim-choose/" method="post"> {% csrf_token %}
-            <input id="data" type="hidden" name="player_turns" value="{{ player_turns }}">
-            <input id="data" type="hidden" name="uw_list" value="{{ uw_list }}">
-
-            <!-- NEXT BUTTON -->
-            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px; margin-bottom: 32px;">Player Elim
-            </button><!-- NEXT BUTTON -->
-        </form>
-
-    </div><!-- LOG IN/REG --
-
-        <!-- FEEDBACK -->
+    <!-- TURN -->
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            UNDERCOVER
-            {{ player_assignment|safe }}
-
-            {{ word_assignment|safe }}
+            PLAYER'S TURN
+            {{ played_names | safe}}
+            {{ cuw_list | safe}}
         </div>
 
-        <div class="row center-block text-container" style="line-height: 200%;">
-            Meet the Team <br>
-            Open Source Libraries <br>
-            Feedback <br>
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+            Click below to see which player goes next.
+        </div>
 
-            <form>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="feedback" placeholder="Click to type"
-                           style='font-family: Open Sans, sans-serif;'>
-                </div>
+
+        <div class="row center-block text2-container"
+             style="font-size: 16px; color: #2c3531; margin-bottom: 32px; border: 1px solid #d1e8e2;">
+            {{ next_player }}
+        </div>
+
+        <!-- TURN -->
+    </div>
+
+
+        <!-- NEXT BUTTON -->
+        <div class="row black-container">
+
+            <form action="/turn-reveal/" method="post"> {% csrf_token %}
+                <input id="cuw_list" type="hidden" name="cuw_list" value="{{ cuw_list }}">
+                <input id="played_names" type="hidden" name="played_names" value="{{ played_names }}">
+            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
+                    style="margin-top: 32px; margin-bottom: 32px;">
+                NEXT PLAYER
+            </button><!-- NEXT BUTTON -->
             </form>
 
-            <button type="button" class=" btn btn-primary btn-responsive submitButton"
-                    style="width: 40%; height: 32px;">SUBMIT
-            </button>
-
         </div>
+    </div>
 
-    </div> <!-- FEEDBACK -->
 
-</div>
-</div>
+        <script>
 
-<script>
-    $(document).ready(function () {
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                while (0 !== currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                return array;
+            }
 
-        $(".add-more").click(function () {
-            var html = $(".copy").html();
-            $(".after-add-more").after(html);
-        });
+            var wordAssignment = {{word_assignment|safe}};
+            var playerAssignment = {{player_assignment|safe}};
+            var textList = [];
+            for (var i = 0; i < playerAssignment.length; i++) {
+                for (var j = 0; j < playerAssignment[i].length; j++) {
+                    var text = "";
+                    text += "<p><button class='center-block btn btn-primary revealButton' type='button' data-toggle='collapse' data-target='#" + i + j + "' aria-expanded='false' aria-controls='collapseExample'>";
+                    text += playerAssignment[i][j];
+                    text += "</button></p><div class='collapse role no-transition' id='" + i + j + "'><div class='card card-block text-container' style='font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;'>";
+                    text += wordAssignment[i][j];
+                    text += "</div></div>";
+                    textList.push(text);
+                }
+            }
 
-        $("body").on("click", ".remove", function () {
-            $(this).parents(".control-group").remove();
-        });
+            textList = shuffle(textList);
+            var finalText = textList.join('');
 
-    });
-</script>
+            document.getElementById("Reveal").innerHTML = finalText;
+
+
+            $(document).ready(function () {
+
+                $(".add-more").click(function () {
+                    var html = $(".copy").html();
+                    $(".after-add-more").after(html);
+                });
+
+                $("body").on("click", ".remove", function () {
+                    $(this).parents(".control-group").remove();
+                });
+
+            });
+        </script>
 
 </body>
 
