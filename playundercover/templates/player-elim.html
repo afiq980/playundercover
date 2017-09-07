@@ -176,6 +176,8 @@
         <div class='row btn-group-vertical center-block' data-toggle='buttons'>
             <form id="elim_form" action="/player-elim/" method="post">{% csrf_token %}
                 <input id="data" type="hidden" name="cuw_list" value="{{ cuw_list }}">
+                <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
+                <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
                 <p id="Players"></p>
             </form>
         </div>

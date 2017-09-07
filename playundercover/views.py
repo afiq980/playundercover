@@ -96,32 +96,37 @@ def register_players(request):
     number_of_u = request.POST['uNumber']
     number_of_w = request.POST['wNumber']
 
-    player_names = player_names[:-1] # because last item is an extra blank item in list
+    if player_names[-1] == "":
+        player_names = player_names[:-1] # because last item is an extra blank item in list
 
     if len(player_names) != len(set(player_names)):
         error_message = "Player names must be unique."
-        return render(request, 'quickplay.html', {"error_message": error_message})
+        return render(request, 'replay.html', {"error_message": error_message})
 
     if int(number_of_u) + int(number_of_w) >= len(player_names):
         error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return render(request, 'replay.html', {"error_message":error_message})
 
     if int(number_of_u) + int(number_of_w) == 0:
         error_message = "There must be at least 1 of either Undercover or Mr White."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return render(request, 'replay.html', {"error_message":error_message})
 
     if int(number_of_u) < 0 or  int(number_of_w) < 0:
         error_message = "Number of Undercovers and/or Mr White cannot be negative."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return render(request, 'replay.html', {"error_message":error_message})
 
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
+    c_word = word_assignment[0][0]
+    u_word = word_assignment[1][0]
 
     player_assignment = json.dumps(player_assignment)
     word_assignment = json.dumps(word_assignment)
 
     return render(request, 'word-reveal.html', {"player_assignment":player_assignment,
-                                                "word_assignment":word_assignment})
+                                                "word_assignment":word_assignment,
+                                                "c_word":c_word,
+                                                "u_word":u_word})
 
 
 # returns list of lists - [[civilians],[undercover],[white]]
@@ -201,6 +206,8 @@ def get_pair(request, difficulty_level, season_name):
 def turn_reveal_single(request):
     cuw_list_str = request.POST['cuw_list']
     cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
+    c_word = request.POST['c_word']
+    u_word = request.POST['u_word']
     try:
         played_names_str = request.POST['played_names']
         played_names = ast.literal_eval(str(played_names_str.encode('utf-8')))
@@ -213,10 +220,14 @@ def turn_reveal_single(request):
         played_names.append(next_player)
         return render(request, 'turn-reveal.html', {"next_player": next_player,
                                                     "cuw_list": cuw_list,
-                                                    "played_names": played_names})
+                                                    "played_names": played_names,
+                                                    "c_word": c_word,
+                                                    "u_word": u_word})
     else:
         return render(request, 'player-elim.html', {"player_turns": played_names,
-                                                    "cuw_list": cuw_list})
+                                                    "cuw_list": cuw_list,
+                                                    "c_word": c_word,
+                                                    "u_word": u_word})
 
 
 
@@ -279,6 +290,14 @@ def player_elim(request):
     players_to_elim = request.POST.getlist('players_to_elim')
     cuw_list_str = request.POST['cuw_list']
     cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
+    c_word = request.POST['c_word']
+    u_word = request.POST['u_word']
+
+    player_list = []
+    player_list.extend(cuw_list[0])
+    player_list.extend(cuw_list[1])
+    player_list.extend(cuw_list[2])
+    player_list = json.dumps(player_list)
 
     # remove the names of players to elim
     for player_to_elim in players_to_elim:
@@ -289,14 +308,49 @@ def player_elim(request):
                 pass
 
     if len(cuw_list[1]) == 0 and len(cuw_list[2]) == 0:
-        # END GAME UW wins
-        return render(request, 'index.html', {})
+        winner_list = ""
+        for i in range(0, len(cuw_list[0])):
+            if i == len(cuw_list[0])-1 and i != 0:
+                winner_list += "& "
+                winner_list += cuw_list[0][i]
+            elif len(cuw_list[0]) == 1:
+                winner_list += cuw_list[0][i]
+            else:
+                winner_list += cuw_list[0][i] + ", "
+
+        return render(request, 'gameover.html', {"winner_group": "CIVILIANS",
+                                                 "winner_list": winner_list,
+                                                 "c_word": c_word,
+                                                 "u_word": u_word,
+                                                 "player_list": player_list})
     elif len(cuw_list[0]) == 0:
-        # END GAME C wins
-        return render(request, 'index.html', {})
+        cuw_list[2].extend(cuw_list[1])
+        winner_list = ""
+        for i in range(0, len(cuw_list[2])):
+            if i == len(cuw_list[2])-1 and i != 0:
+                winner_list += "& "
+                winner_list += cuw_list[2][i]
+            elif len(cuw_list[2]) == 1:
+                winner_list += cuw_list[2][i]
+            else:
+                winner_list += cuw_list[2][i] + ", "
+
+        return render(request, 'gameover.html', {"winner_group": "UNDERCOVERS/MR WHITES",
+                                                 "winner_list": winner_list,
+                                                 "c_word": c_word,
+                                                 "u_word": u_word,
+                                                 "player_list": player_list})
     else:
         next_player = next_player = get_next_player(cuw_list, [])
         played_names = [next_player]
         return render(request, 'turn-reveal.html', {"next_player": next_player,
                                                     "cuw_list": cuw_list,
                                                     "played_names": played_names})
+
+
+def replay(request):
+    player_list = request.POST['player_list']
+    player_list = ast.literal_eval(str(player_list.encode('utf-8')))
+    player_list = json.dumps(player_list)
+
+    return render(request, 'replay.html', {"player_list": player_list})

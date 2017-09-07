@@ -13,8 +13,8 @@ class Season(models.Model):
 
 class Pair(models.Model):
     id = models.AutoField(primary_key=True)
-    word1 = models.CharField(max_length=20)
-    word2 = models.CharField(max_length=20)
+    word1 = models.CharField(max_length=40)
+    word2 = models.CharField(max_length=40)
     level = models.IntegerField(default=0)
     season = models.ForeignKey(Season, blank=True, null=True, default=None)
 
