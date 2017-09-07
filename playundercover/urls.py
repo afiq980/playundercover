@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^register-players/', views.register_players, name='register_players'),
     url(r'^turn-reveal/', views.turn_reveal_single, name='turn_reveal'),
     url(r'^player-elim/', views.player_elim, name='player_elim'),
+    url(r'^replay/', views.replay, name='replay')
 ]

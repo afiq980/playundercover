@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!— Import bootstrap and Latest compiled and minified CSS —>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Import jquery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        padding-top: 54px;
+    }
+
+    label {
+        display: block;
+        text-align: left;
+    }
+
+    @media only screen and (min-width: 950px) {
+        .container {
+            max-width: 950px;
+            background-color: white;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .navbar-custom {
+        background: #116466;
+        width: 100%;
+        border: 0px solid #d1e8e2;
+        -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+        -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+        margin: 0 auto;
+    }
+
+    .navbar-text {
+        height: 24px;
+        font-size: 24px;
+        font-family: Open Sans, sans-serif;
+        letter-spacing: 5px;
+        text-align: center;
+        display: inline-block;
+        float: none;
+    }
+
+    .container {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+    }
+
+    .green-container {
+        background: #116466;
+        width: auto;
+        display: block;
+    }
+
+    .black-container {
+        background: #2c3531;
+        width: auto;
+        display: block;
+    }
+
+    .btn {
+        width: 70%;
+        font-family: Open Sans, sans-serif;
+    }
+
+    .nextButton {
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
+        margin-top: 32px;
+    }
+
+    .nextButton:hover {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #116466;
+        color: #116466;
+        font-size: 20px;
+    }
+
+    .header-container {
+        width: 70%;
+        color: #d9b08c;
+        font-size: 20px;
+        letter-spacing: 5px;
+        text-align: left;
+        margin-top: 32px;
+        margin-bottom: 5px;
+    }
+
+    .text-container {
+        width: 70%;
+        color: #d1e8e2;
+        font-size: 20px;
+        text-align: center;
+        text-align: justify;
+        text-justify: distribute;
+    }
+
+
+</style>
+
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Undercover</title>
+</head>
+
+<body style='background-color: #e5e5e5;'>
+
+<div class="container">
+
+    <!-- TOP BAR -->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+        <div>
+            <a class="navbar-brand navbar-text" href="/"
+               style='padding-top: 3px; padding-bottom: 10px; color: #d1e8e2;'>UNDERCOVER</a>
+        </div>
+    </nav><!-- TOP BAR -->
+
+    <form action="/register-players/" method="post"> {% csrf_token %}
+        <!-- ADD NAMES -->
+        <div class="row green-container">
+
+            <p id="Error"></p>
+
+            <div class="row center-block header-container">
+                PLAYER NAMES {{ player_list|safe }}
+            </div>
+            <div class="row center-block text-container"
+                 style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+                Min. no. of players recommended is 4.
+            </div>
+
+
+            <div class="row">
+
+                <p id="players" style="margin-bottom: 30px;"></p>
+
+            </div>
+
+        </div>
+
+
+        <!-- UNDERCOVERS & MR.W -->
+        <div class="row black-container">
+
+            <div class="row center-block header-container">
+                SETTINGS
+            </div>
+            <div class="row center-block text-container" style="font-size: 16px; text-align: left; color: #d1e8e2; ">
+                Click to select no. of undercovers and Mr. Whites.
+            </div>
+
+            <div class="row center-block header-container">
+                NO. OF UNDERCOVERS
+                <input class='btn btn-default btn-sm btn-responsive' type='number' autocomplete='off' name='uNumber'
+                       placeholder='No. of Undercovers' value='1'
+                       style="height: 52px;font-family: Open Sans, sans-serif; width: 100%; ">
+            </div>
+
+            <div class="row center-block header-container">
+                NO. OF MR. WHITES
+
+                <input class='btn btn-default btn-sm btn-responsive' type='number' autocomplete='off' name='wNumber'
+                       placeholder='No. of Mr Whites' value='0'
+                       style="height: 52px; font-family: Open Sans, sans-serif; width: 100%;">
+            </div>
+            <!-- UNDERCOVERS & MR.W -->
+
+
+            <!-- NEXT BUTTON -->
+            <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
+                    style="margin-top: 32px; margin-bottom: 32px;">NEXT
+            </button><!-- NEXT BUTTON -->
+        </div>
+
+
+    </form>
+
+
+</div>
+
+<script>
+
+
+    var playerList = {{ player_list | safe }};
+    var text = "";
+
+    for (var i = 0; i < playerList.length; i++) {
+            text += '<div class="control-group input-group" style="width:66.5%; margin: 0 auto;">' +
+                '<input type="text" name="addmore[]" class="form-control"' +
+                'style="border-radius: 3px !important; height: 52px; margin-bottom: 5px;"' +
+                'placeholder="' + playerList[i] + '" value="' + playerList[i] + '"></div>'
+    }
+
+    document.getElementById("players").innerHTML = text;
+
+    $(document).ready(function () {
+        $(".add-more").click(function () {
+            var html = $(".copy").html();
+            $(".after-add-more").after(html);
+        });
+        $("body").on("click", ".remove", function () {
+            $(this).parents(".control-group").remove();
+        });
+    });
+
+    var error = "{{ error_message | safe }}";
+    var text = "";
+    if (error.length > 0) {
+        text += "<div class='alert alert-success' style='border-radius: 0 !important; border: 0; background: #000000; color: #ffffff; text-align: center;'>";
+        text += "<strong>" + error + "</strong>";
+        text += "</div>";
+    }
+    document.getElementById("Error").innerHTML = text;
+
+</script>
+
+</body>
+
+</html>

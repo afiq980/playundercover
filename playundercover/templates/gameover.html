@@ -7,7 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
@@ -106,23 +105,15 @@
     .revealButton {
         background: #116466;
         height: 52px;
+        border: 1px solid #d1e8e2;
         color: #d1e8e2;
         font-size: 20px;
-        border: 1px solid #d1e8e2;
     }
 
     .revealButton:hover {
         background: #d1e8e2;
         height: 52px;
-        border: 1px solid #d1e8e2;
-        color: #116466;
-        font-size: 20px;
-    }
-
-    .revealButton:focus {
-        background: #d1e8e2;
-        height: 52px;
-        border: 1px solid #d1e8e2;
+        border: 1px solid #116466;
         color: #116466;
         font-size: 20px;
     }
@@ -130,6 +121,7 @@
     .nextButton {
         background: #2c3531;
         height: 91px;
+        line-height: 80px;
         border: 1px solid #d9b08c;
         color: #d9b08c;
         font-size: 24px;
@@ -138,9 +130,28 @@
     .nextButton:hover {
         background: #d9b08c;
         height: 91px;
+        line-height: 80px;
         border: 1px solid #2c3531;
         color: #2c3531;
         font-size: 24px;
+    }
+
+    .feedbackButton {
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 12px;
+        margin-bottom: 32px;
+    }
+
+    .feedbackButton:hover {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #116466;
+        color: #116466;
+        font-size: 12px;
+        margin-bottom: 32px;
     }
 
     .role {
@@ -155,13 +166,6 @@
         line-height: 40px;
     }
 
-    .no-transition {
-        -webkit-transition: height 0.01s;
-        -moz-transition: height 0.01s;
-        -ms-transition: height 0.01s;
-        -o-transition: height 0.01s;
-        transition: height 0.01s;
-    }
 
 </style>
 
@@ -175,6 +179,7 @@
 
 <body style='background-color: #e5e5e5;'>
 
+
 <div class="container">
 
     <!-- TOP BAR -->
@@ -185,102 +190,115 @@
         </div>
     </nav><!-- TOP BAR -->
 
-    <!-- CLICK TO REVEAL WORDS -->
+    <!-- ROLE REVEAL -->
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            ASSIGNED WORDS
+            GAME OVER, {{ winner_group }} WON, CONGRATULATIONS {{ winner_list }}!
         </div>
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
-            Click your name below <strong>in private</strong> to see your word. Click again to hide.
+            See below for words assigned to the roles.
         </div>
 
-        <p id="Reveal" style="margin-bottom: 30px;"></p>
-        <!-- CLICK TO REVEAL WORDS -->
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+
+
+            <div class="row center-block text-container"
+                 style="font-size: 16px; text-align: center; color: #d1e8e2; margin-bottom: 14px; ">
+                CITIZEN
+            </div>
+
+            <div class="card card-block text-container role"
+                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;">
+                {{ c_word }}
+            </div>
+
+            <div class="row center-block text-container"
+                 style="font-size: 16px; text-align: center; color: #d1e8e2; margin-bottom: 14px; ">
+                UNDERCOVER
+            </div>
+
+            <div class="card card-block text-container role"
+                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;">
+                {{ u_word }}
+            </div>
+
+            <div class="row center-block text-container"
+                 style="font-size: 16px; text-align: center; color: #d1e8e2; margin-bottom: 14px; ">
+                MR. WHITE
+            </div>
+
+            <div class="card card-block text-container role"
+                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;">
+                No words assigned
+            </div>
+
+        </div>
+        <!-- ROLE REVEAL -->
 
     </div>
 
 
-    <!-- START BUTTON -->
+    <!-- RESTART BUTTON -->
     <div class="row black-container">
 
-        <!-- DO NOT DELETE -->
-        <form action="/turn-reveal/" method="post"> {% csrf_token %}
-            <input id="cuw_list" type="hidden" name="cuw_list" value="{{ player_assignment }}">
-            <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
-            <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
-            <!-- DO NOT DELETE -->
 
+        <form action="/replay/" method="post"> {% csrf_token %}
+            <input id="player_list" type="hidden" name="player_list" value="{{ player_list }}">
             <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px;">START
-            </button><!-- START BUTTON -->
+                    style="margin-top: 32px;">RESTART
+            </button><!-- RESTART BUTTON -->
+        </form>
 
+        <!-- FEEDBACK -->
+        <div class="row center-block header-container">
+            FEEDBACK
+        </div>
+
+        <form action="grade.php" method="post" id="quiz">
             <div class="row center-block text-container"
-                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; ">
-                Click here for a new set of words.
+                 style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+                Your feedback is important to us as we hope to improve. Please rate the set of words used in this
+                round.
             </div>
         </form>
 
+        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
+                style="width: 40%; height: 32px;margin: 0 auto;margin-bottom: 32px;">GOOD
+        </button>
+
+        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
+                style="width: 40%; height: 32px;margin: 0 auto; margin-bottom: 32px;">BAD
+        </button>
     </div>
+
 </div>
 
 
 <script>
 
-    function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-    }
-
-    var wordAssignment = {{word_assignment|safe}};
-    var playerAssignment = {{player_assignment|safe}};
-    var textList = [];
-    for (var i = 0; i < playerAssignment.length; i++) {
-        for (var j = 0; j < playerAssignment[i].length; j++) {
-            var text = "";
-            text += "<p><button class='center-block btn btn-primary revealButton' type='button' data-toggle='collapse' data-target='#" + i + j + "' aria-expanded='false' aria-controls='collapseExample'>";
-            text += playerAssignment[i][j];
-            text += "</button></p><div class='collapse role no-transition' id='" + i + j + "'><div class='card card-block text-container' style='font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;'>";
-            text += wordAssignment[i][j];
-            text += "</div></div>";
-            textList.push(text);
-        }
-    }
-
-    textList = shuffle(textList);
-    var finalText = textList.join('');
-
-    document.getElementById("Reveal").innerHTML = finalText;
-
-
     $(document).ready(function () {
-
         $(".add-more").click(function () {
             var html = $(".copy").html();
             $(".after-add-more").after(html);
         });
-
         $("body").on("click", ".remove", function () {
             $(this).parents(".control-group").remove();
         });
-
     });
+
+    var error = "{{ error_message | safe }}";
+    var text = "";
+    if (error.length > 0) {
+        text += "<div class='alert alert-success' style='border-radius: 0 !important; border: 0; background: #000000; color: #ffffff; text-align: center;'>";
+        text += "<strong>" + error + "</strong>";
+        text += "</div>";
+    }
+    document.getElementById("Error").innerHTML = text;
+
 </script>
 
 </body>

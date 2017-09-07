@@ -182,6 +182,8 @@
             <form action="/turn-reveal/" method="post"> {% csrf_token %}
                 <input id="cuw_list" type="hidden" name="cuw_list" value="{{ cuw_list }}">
                 <input id="played_names" type="hidden" name="played_names" value="{{ played_names }}">
+                <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
+                <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
             <button type="submit" class="center-block btn btn-primary btn-responsive nextButton"
                     style="margin-top: 32px; margin-bottom: 32px;">
                 NEXT PLAYER
