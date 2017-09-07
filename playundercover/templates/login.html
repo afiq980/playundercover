@@ -7,6 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
@@ -168,6 +169,12 @@
 
         <!-- ERROR MESSAGE -->
         <p id="Error"></p>
+
+        <a href="{% url 'social:begin' 'google-oauth2' %}" type="submit" class="center-block btn btn-primary btn-responsive signButton btn-google">SIGN IN WITH GOOGLE</a>
+
+        <p class="row center-block text-container" style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; margin-top: 32px;">
+            or sign in with your email below
+        </p>
 
         <div class="row center-block header2-container">
             EMAIL
