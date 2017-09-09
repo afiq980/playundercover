@@ -173,7 +173,7 @@
             EMAIL
         </div>
 
-        <form action="/register-players/" method="post"> {% csrf_token %}
+        <form action="/process-register/" method="post"> {% csrf_token %}
             <div class="form-group">
                 <input type="text" class="form-control" id="feedback" placeholder="Email Address" name="email"
                        style='font-family: Open Sans, sans-serif;height: 52px; width: 70%; margin: 0 auto;'>
@@ -184,7 +184,7 @@
         </div>
 
             <div class="form-group">
-                <input type="text" class="form-control" id="feedback" placeholder="Password" name="password1"
+                <input type="password" class="form-control" id="feedback" placeholder="Password" name="password1"
                        style='font-family: Open Sans, sans-serif; height: 52px; width: 70%; margin: 0 auto;'>
             </div>
 
@@ -193,7 +193,7 @@
         </div>
 
             <div class="form-group">
-                <input type="text" class="form-control" id="feedback" placeholder="Confirm password" name="password2"
+                <input type="password" class="form-control" id="feedback" placeholder="Confirm password" name="password2"
                        style='font-family: Open Sans, sans-serif; height: 52px; width: 70%; margin: 0 auto;'>
             </div>
 

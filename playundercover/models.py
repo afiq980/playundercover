@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 class Season(models.Model):
     id = models.AutoField(primary_key=True)
@@ -22,9 +23,8 @@ class Pair(models.Model):
         app_label = 'playundercover'
 
 
-class User(models.Model):
-    id = models.AutoField(primary_key=True)
-    email = models.CharField(max_length=50)
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, related_name="user")
 
     class Meta:
         app_label = 'playundercover'
@@ -32,7 +32,7 @@ class User(models.Model):
 
 class UserPair(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User)
+    custom_user = models.ForeignKey(CustomUser)
     pair = models.ForeignKey(Pair)
 
     class Meta:
@@ -41,8 +41,17 @@ class UserPair(models.Model):
 
 class Namelist(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    custom_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=14)
 
     class Meta:
         app_label = 'playundercover'
+
+
+def create_custom_user(sender, **kwargs):
+    user = kwargs["instance"]
+    if kwargs["created"]:
+        custom_user = CustomUser(user=user)
+        custom_user.save()
+
+post_save.connect(create_custom_user, sender=User)

@@ -10,11 +10,15 @@ from django.shortcuts import redirect
 from django.contrib.auth import login as auth_login
 from django.template.context_processors import csrf
 from django.contrib.auth.models import User
-from models import Season, Pair, UserPair
+from models import Season, Pair, UserPair, Namelist, CustomUser
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    return render(request, 'index.html', {})
+    if request.user.is_authenticated():
+        return render(request, 'index.html', {'logged_in': "true"})
+    else:
+        return render(request, 'index.html', {'logged_in': "false"})
 
 
 def login(request):
@@ -79,6 +83,7 @@ def process_register(request):
         if password1 == password2:
             user = User.objects.create_user(email, email, password1)
             user.save()
+            # CustomUser.objects.create(user)
         else:
             c = {}
             c.update(csrf(request))
@@ -101,19 +106,19 @@ def register_players(request):
 
     if len(player_names) != len(set(player_names)):
         error_message = "Player names must be unique."
-        return render(request, 'replay.html', {"error_message": error_message})
+        return render(request, 'quickplay.html', {"error_message": error_message})
 
     if int(number_of_u) + int(number_of_w) >= len(player_names):
         error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
-        return render(request, 'replay.html', {"error_message":error_message})
+        return render(request, 'quickplay.html', {"error_message":error_message})
 
     if int(number_of_u) + int(number_of_w) == 0:
         error_message = "There must be at least 1 of either Undercover or Mr White."
-        return render(request, 'replay.html', {"error_message":error_message})
+        return render(request, 'quickplay.html', {"error_message":error_message})
 
     if int(number_of_u) < 0 or  int(number_of_w) < 0:
         error_message = "Number of Undercovers and/or Mr White cannot be negative."
-        return render(request, 'replay.html', {"error_message":error_message})
+        return render(request, 'quickplay.html', {"error_message":error_message})
 
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
@@ -354,3 +359,30 @@ def replay(request):
     player_list = json.dumps(player_list)
 
     return render(request, 'replay.html', {"player_list": player_list})
+
+
+@login_required(login_url='')
+def name_list(request):
+    current_user = request.user
+    custom_user = CustomUser.objects.get(user=current_user)
+    namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+    namelist = []
+    for name_object in namelist_objects:
+        namelist.append(str(name_object[0]))
+    print(namelist)
+
+    return render(request, 'player-list.html', {"name_list": namelist})
+
+
+@login_required(login_url='')
+def process_name_list(request):
+    namelist = request.POST.getlist('addmore[]')
+    current_user = request.user
+    custom_user = CustomUser.objects.get(user=current_user)
+    Namelist.objects.filter(custom_user=custom_user).delete()
+
+    for name in namelist:
+        if len(name) > 0:
+            Namelist.objects.create(custom_user=custom_user, name=name)
+
+    return name_list(request)
