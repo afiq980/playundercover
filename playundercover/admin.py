@@ -1,13 +1,19 @@
 from django.contrib import admin
 from django.forms import models
-from models import Pair
+from models import Pair, CustomUser, UserPair
 from import_export import resources
 from import_export.admin import ImportExportMixin, ImportMixin, ImportExportActionModelAdmin
 
-# class PairAdmin(admin.ModelAdmin):
-#     pass
-#
-# admin.site.register(Pair, PairAdmin)
+
+class CustomUserAdmin(admin.ModelAdmin):
+    pass
+
+class UserPairAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(UserPair, UserPairAdmin)
+
 
 class PairResource(resources.ModelResource):
     class Meta:

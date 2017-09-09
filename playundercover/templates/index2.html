@@ -181,7 +181,9 @@
                  alt="Chania" style="margin: 0 auto; margin-bottom:32px; display: block;">
         </div><!-- HERO IMAGE -->
 
-        <p id="options" style="margin-bottom: 30px;"></p>
+     <a href="/login/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">LOG IN</a>
+     <a href="/register/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">REGISTER</a>
+     <a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">QUICK PLAY</a>
 
     </div> <!-- LOG IN/REG -->
 
@@ -229,10 +231,9 @@
                 <input type="text" class="form-control" id="feedback" placeholder="Click to type"
                        style='font-family: Open Sans, sans-serif;'>
 
-                <button type="submit" class="btn btn-primary btn-responsive submitButton"
-                        style="width: 40%; height: 32px;">
-                    SUBMIT
-                </button>
+            <button type="submit" class="btn btn-primary btn-responsive submitButton" style="width: 40%; height: 32px;">
+                SUBMIT
+            </button>
             </div>
         </form>
 
@@ -241,25 +242,6 @@
 
 
 </div>
-
-<script>
-
-    var logged = {{ logged_in | safe }};
-    var text = "";
-
-    if(!logged){
-        text += '<a href="/login/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">LOG IN</a>' +
-            '<a href="/register/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">REGISTER</a>' +
-            '<a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">QUICK PLAY</a>'
-    } else {
-        text += '<a href="/name-list/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">NAME LIST</a>' +
-            '<a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">PLAY NOW</a>'
-    }
-
-    document.getElementById("options").innerHTML = text;
-
-
-</script>
 
 </body>
 
