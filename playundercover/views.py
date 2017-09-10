@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.shortcuts import redirect
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.template.context_processors import csrf
 from django.contrib.auth.models import User
 from models import Season, Pair, UserPair, Namelist, CustomUser
@@ -26,6 +27,12 @@ def login(request):
         return home(request)
     else:
         return render(request, 'login.html', {})
+
+
+def login(request):
+    if request.user.is_authenticated():
+        auth_logout(request)
+    return home(request)
 
 
 def authentication(request):
