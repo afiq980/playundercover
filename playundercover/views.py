@@ -22,7 +22,10 @@ def home(request):
 
 
 def login(request):
-    return render(request, 'login.html', {})
+    if request.user.is_authenticated():
+        return home(request)
+    else:
+        return render(request, 'login.html', {})
 
 
 def authentication(request):
@@ -55,7 +58,10 @@ def authentication(request):
 
 
 def register(request):
-    return render(request, 'register.html', {})
+    if request.user.is_authenticated():
+        return home(request)
+    else:
+        return render(request, 'register.html', {})
 
 
 def process_register(request):
@@ -369,7 +375,6 @@ def name_list(request):
     namelist = []
     for name_object in namelist_objects:
         namelist.append(str(name_object[0]))
-    print(namelist)
 
     return render(request, 'player-list.html', {"name_list": namelist})
 
@@ -385,4 +390,12 @@ def process_name_list(request):
         if len(name) > 0:
             Namelist.objects.create(custom_user=custom_user, name=name)
 
-    return name_list(request)
+    namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+
+    namelist = []
+    for name_object in namelist_objects:
+        namelist.append(str(name_object[0]))
+
+    message = "Name list updated."
+
+    return render(request, 'player-list.html', {"name_list": namelist, "error_message": message})
