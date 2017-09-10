@@ -29,7 +29,7 @@ def login(request):
         return render(request, 'login.html', {})
 
 
-def login(request):
+def logout(request):
     if request.user.is_authenticated():
         auth_logout(request)
     return home(request)
