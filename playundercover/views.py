@@ -409,7 +409,7 @@ def player_elim(request):
             else:
                 winner_list += cuw_list[0][i] + ", "
 
-        return render(request, 'gameover.html', {"winner_group": "CIVILIANS",
+        return render(request, 'gameover.html', {"winner_group": "Civilians",
                                                  "winner_list": winner_list,
                                                  "c_word": c_word,
                                                  "u_word": u_word,
@@ -426,7 +426,7 @@ def player_elim(request):
             else:
                 winner_list += cuw_list[2][i] + ", "
 
-        return render(request, 'gameover.html', {"winner_group": "UNDERCOVERS/MR WHITES",
+        return render(request, 'gameover.html', {"winner_group": "Undercovers/Mr Whites",
                                                  "winner_list": winner_list,
                                                  "c_word": c_word,
                                                  "u_word": u_word,
