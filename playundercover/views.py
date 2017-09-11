@@ -379,6 +379,17 @@ def player_elim(request):
     player_list.extend(cuw_list[2])
     player_list = json.dumps(player_list)
 
+    exposed_c = []
+    exposed_u = []
+    exposed_w = []
+    for player in players_to_elim:
+        if player in cuw_list[0]:
+            exposed_c.append(player)
+        if player in cuw_list[1]:
+            exposed_u.append(player)
+        if player in cuw_list[2]:
+            exposed_w.append(player)
+
     # remove the names of players to elim
     for player_to_elim in players_to_elim:
         for cuw_sub_list in cuw_list:
@@ -425,7 +436,10 @@ def player_elim(request):
         played_names = [next_player]
         return render(request, 'turn-reveal.html', {"next_player": next_player,
                                                     "cuw_list": cuw_list,
-                                                    "played_names": played_names})
+                                                    "played_names": played_names,
+                                                    "exposed_c": exposed_c,
+                                                    "exposed_u": exposed_u,
+                                                    "exposed_w": exposed_w})
 
 
 def replay(request):
