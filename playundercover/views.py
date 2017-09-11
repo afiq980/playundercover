@@ -137,12 +137,30 @@ def quickplay_with_error(request, error_message):
         return render(request, 'quickplay.html', {'logged_in': "true",
                                                   "name_list": namelist,
                                                   "error_message": error_message})
-    
+
 
 def register_players(request):
     player_names = request.POST.getlist('addmore[]')
     number_of_u = request.POST['uNumber']
     number_of_w = request.POST['wNumber']
+
+    return process_register_players(request, player_names, number_of_u, number_of_w)
+
+
+def register_players_new_word(request):
+    player_names = request.POST['addmore[]']
+    player_names = ast.literal_eval(player_names)
+    number_of_u = request.POST['uNumber']
+    number_of_w = request.POST['wNumber']
+
+    return process_register_players(request, player_names, number_of_u, number_of_w)
+
+
+def process_register_players(request, player_names, number_of_u, number_of_w):
+
+    print(player_names)
+
+    player_names_copy = deepcopy(player_names) # used to restart page when users want a new word
 
     if player_names[-1] == "":
         player_names = player_names[:-1] # because last item is an extra blank item in list
@@ -177,10 +195,13 @@ def register_players(request):
     player_assignment = json.dumps(player_assignment)
     word_assignment = json.dumps(word_assignment)
 
-    return render(request, 'word-reveal.html', {"player_assignment":player_assignment,
-                                                "word_assignment":word_assignment,
-                                                "c_word":c_word,
-                                                "u_word":u_word})
+    return render(request, 'word-reveal.html', {"player_assignment": player_assignment,
+                                                "word_assignment": word_assignment,
+                                                "c_word": c_word,
+                                                "u_word": u_word,
+                                                "player_names": player_names_copy,
+                                                "number_of_u": number_of_u,
+                                                "number_of_w": number_of_w})
 
 
 # returns list of lists - [[civilians],[undercover],[white]]
