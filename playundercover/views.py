@@ -145,6 +145,8 @@ def register_players(request):
     if player_names[-1] == "":
         player_names = player_names[:-1] # because last item is an extra blank item in list
 
+    while "" in player_names: player_names.remove("")
+
     if len(player_names) != len(set(player_names)):
         error_message = "Player names must be unique."
         return quickplay_with_error(request, error_message)
