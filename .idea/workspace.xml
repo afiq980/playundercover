@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="741adc70-f382-4459-9abb-4c477dbf3636" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playundercover/templates/quickplay.html" afterPath="$PROJECT_DIR$/playundercover/templates/quickplay.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playundercover/templates/replay.html" afterPath="$PROJECT_DIR$/playundercover/templates/replay.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playundercover/views.py" afterPath="$PROJECT_DIR$/playundercover/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playundercover/templates/gameover.html" afterPath="$PROJECT_DIR$/playundercover/templates/gameover.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playundercover/templates/word-reveal.html" afterPath="$PROJECT_DIR$/playundercover/templates/word-reveal.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,25 +15,26 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/playundercover/views.py">
+      <file leaf-file-name="word-reveal.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/playundercover/templates/word-reveal.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="337" column="35" lean-forward="true" selection-start-line="337" selection-start-column="35" selection-end-line="337" selection-end-column="35" />
+            <state relative-caret-position="981">
+              <caret line="218" column="0" lean-forward="true" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/playundercover/templates/index.html">
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/playundercover/templates/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-175">
-              <caret line="100" column="15" lean-forward="true" selection-start-line="100" selection-start-column="15" selection-end-line="100" selection-end-column="15" />
+            <state relative-caret-position="117">
+              <caret line="202" column="110" lean-forward="true" selection-start-line="202" selection-start-column="110" selection-end-line="202" selection-end-column="137" />
               <folding>
-                <element signature="n#style#0;n#button#0;n#div#0;n#form#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,9 +95,7 @@
         <option value="$PROJECT_DIR$/playundercover/templates/admin.py" />
         <option value="$PROJECT_DIR$/playundercover/templates/player-turn.html" />
         <option value="$PROJECT_DIR$/playundercover/templates/quickplay2.html" />
-        <option value="$PROJECT_DIR$/playundercover/templates/word-reveal.html" />
         <option value="$PROJECT_DIR$/playundercover/templates/player-elim.html" />
-        <option value="$PROJECT_DIR$/playundercover/templates/gameover.html" />
         <option value="$PROJECT_DIR$/playundercover/templates/turn-reveal.html" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/playundercover/settings.py" />
@@ -111,6 +109,8 @@
         <option value="$PROJECT_DIR$/playundercover/templates/quickplay.html" />
         <option value="$PROJECT_DIR$/playundercover/templates/replay.html" />
         <option value="$PROJECT_DIR$/playundercover/views.py" />
+        <option value="$PROJECT_DIR$/playundercover/templates/gameover.html" />
+        <option value="$PROJECT_DIR$/playundercover/templates/word-reveal.html" />
       </list>
     </option>
   </component>
@@ -448,7 +448,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="29" width="1938" height="1060" extended-state="6" />
+    <frame x="-9" y="29" width="1938" height="1060" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19166666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -756,24 +756,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/playundercover/templates/word-reveal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1513">
-          <caret line="253" column="55" lean-forward="true" selection-start-line="253" selection-start-column="4" selection-end-line="253" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/playundercover/templates/turn-reveal.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="326">
           <caret line="192" column="33" lean-forward="false" selection-start-line="192" selection-start-column="27" selection-end-line="192" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/playundercover/templates/gameover.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="249" column="90" lean-forward="false" selection-start-line="249" selection-start-column="79" selection-end-line="249" selection-end-column="90" />
         </state>
       </provider>
     </entry>
@@ -873,16 +859,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/playundercover/templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="202" column="137" lean-forward="true" selection-start-line="202" selection-start-column="110" selection-end-line="202" selection-end-column="137" />
-          <folding>
-            <element signature="n#style#0;n#a#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/playundercover/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-175">
@@ -899,6 +875,35 @@
           <caret line="337" column="35" lean-forward="true" selection-start-line="337" selection-start-column="35" selection-end-line="337" selection-end-column="35" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playundercover/templates/gameover.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="230" column="25" lean-forward="true" selection-start-line="230" selection-start-column="25" selection-end-line="230" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playundercover/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="202" column="110" lean-forward="true" selection-start-line="202" selection-start-column="110" selection-end-line="202" selection-end-column="137" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playundercover/templates/word-reveal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="981">
+          <caret line="218" column="0" lean-forward="true" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#form#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
