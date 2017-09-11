@@ -451,6 +451,7 @@ def process_name_list(request):
     Namelist.objects.filter(custom_user=custom_user).delete()
 
     for name in namelist:
+        name = name.replace(" ", "")
         if len(name) > 0:
             Namelist.objects.create(custom_user=custom_user, name=name)
 
