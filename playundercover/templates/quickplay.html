@@ -252,7 +252,7 @@
         text += '<div class="control-group input-group" style="width:66.5%; margin: 0 auto;">'
         namelist = {{ name_list | safe }};
             for(var i=0;i<namelist.length;i++){
-                text += "<label class='btn btn-primary center-block' style='border-radius: 3px !important; height: 52px; margin-bottom: 5px;'><input type='checkbox' autocomplete='off' name = 'addmore[]' value='" + namelist[i] + "'> <span style='font-size:24px;'>" + namelist[i] + "</span></label>";
+                text += "<label class='btn btn-primary center-block' style='width: 100%; border-radius: 3px !important; height: 52px; margin-bottom: 5px;'><input type='checkbox' autocomplete='off' name = 'addmore[]' value='" + namelist[i] + "'> <span style='font-size:24px;'>" + namelist[i] + "</span></label>";
             }
         text += '</div>'
     }
