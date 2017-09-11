@@ -158,12 +158,13 @@ def register_players_new_word(request):
 
 def process_register_players(request, player_names, number_of_u, number_of_w):
 
-    print(player_names)
-
     player_names_copy = deepcopy(player_names) # used to restart page when users want a new word
 
     if player_names[-1] == "":
         player_names = player_names[:-1] # because last item is an extra blank item in list
+
+    for name in player_names:
+        name = name.replace(" ", "")
 
     while "" in player_names: player_names.remove("")
 
