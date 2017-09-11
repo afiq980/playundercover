@@ -215,9 +215,9 @@ def assign_word(request, cuw_assignment, difficulty_level, season_name):
 
     word1_index = random.randint(0, 1)
     word2_index = 1-word1_index
-    word1 = word_pair_list[word1_index]
-    word2 = word_pair_list[word2_index]
-    word3 = "You are Mr White"
+    word1 = word_pair_list[word1_index].upper()
+    word2 = word_pair_list[word2_index].upper()
+    word3 = "YOU ARE MR.WHITE"
     choose_pair_list = [word1, word2, word3]
 
     word_assignment = []
@@ -344,8 +344,8 @@ def player_elim(request):
     players_to_elim = request.POST.getlist('players_to_elim')
     cuw_list_str = request.POST['cuw_list']
     cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
-    c_word = request.POST['c_word']
-    u_word = request.POST['u_word']
+    c_word = request.POST['c_word'].upper()
+    u_word = request.POST['u_word'].upper()
 
     player_list = []
     player_list.extend(cuw_list[0])
