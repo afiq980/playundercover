@@ -194,12 +194,17 @@
     <div class="row green-container">
 
         <div class="row center-block header-container">
-            GAME OVER, {{ winner_group }} WON, CONGRATULATIONS {{ winner_list }}!
+            GAME OVER
         </div>
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
             See below for words assigned to the roles.
+        </div>
+
+        <div class="row center-block text-container"
+             style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+            {{ winner_group }} WON, CONGRATULATIONS {{ winner_list }}!
         </div>
 
         <div class="row center-block text-container"
@@ -264,15 +269,16 @@
                 Your feedback is important to us as we hope to improve. Please rate the set of words used in this
                 round.
             </div>
+
+            <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
+                    style="width: 40%; height: 32px;margin: 0 auto;margin-bottom: 32px;">GOOD
+            </button>
+
+            <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
+                    style="width: 40%; height: 32px;margin: 0 auto; margin-bottom: 32px;">BAD
+            </button>
         </form>
 
-        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
-                style="width: 40%; height: 32px;margin: 0 auto;margin-bottom: 32px;">GOOD
-        </button>
-
-        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
-                style="width: 40%; height: 32px;margin: 0 auto; margin-bottom: 32px;">BAD
-        </button>
     </div>
 
 </div>
