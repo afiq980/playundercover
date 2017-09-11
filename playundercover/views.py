@@ -151,6 +151,10 @@ def register_players(request):
         error_message = "Player names must be unique."
         return quickplay_with_error(request, error_message)
 
+    if len(player_names) < 3:
+        error_message = "There must be at least 3 players."
+        return quickplay_with_error(request, error_message)
+
     if int(number_of_u) + int(number_of_w) >= len(player_names):
         error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
         return quickplay_with_error(request, error_message)
