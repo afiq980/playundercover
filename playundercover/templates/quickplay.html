@@ -248,7 +248,7 @@
     var logged = {{ logged_in | safe }};
     var text = "";
 
-    if(logged) {
+    if(logged == true) {
         text += '<div class="control-group input-group" style="width:66.5%; margin: 0 auto;">'
         namelist = {{ name_list | safe }};
             for(var i=0;i<namelist.length;i++){

@@ -107,7 +107,8 @@ def process_register(request):
 
 def quickplay(request):
     if not request.user.is_authenticated():
-        return render(request, 'quickplay.html', {'logged_in': "false"})
+        return render(request, 'quickplay.html', {'logged_in': "false",
+                                                  "name_list": []})
     else:
         current_user = request.user
         custom_user = CustomUser.objects.get(user=current_user)
@@ -123,7 +124,8 @@ def quickplay(request):
 def quickplay_with_error(request, error_message):
     if not request.user.is_authenticated():
         return render(request, 'quickplay.html', {'logged_in': "false",
-                                                  "error_message":error_message})
+                                                  "error_message":error_message,
+                                                  "name_list": []})
     else:
         current_user = request.user
         custom_user = CustomUser.objects.get(user=current_user)
