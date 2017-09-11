@@ -153,8 +153,6 @@
 
             <div class="row">
 
-                <p id="namelist" style=""></p>
-
                 <div class="control-group input-group" style="width:66.5%; margin: 0 auto;">
                     <input type="text" name="addmore[]" class="form-control"
                            style="border-radius: 3px !important; height: 52px; margin-bottom: 5px;"
@@ -244,18 +242,6 @@
 </div>
 
 <script>
-
-    var logged = {{ logged_in | safe }};
-    var text = "";
-
-    if(logged) {
-        namelist = {{ name_list | safe }};
-            for(var i=0;i<namelist.length;i++){
-                text += "<label class='btn btn-primary center-block' style='margin-bottom: 20px;'><input type='checkbox' autocomplete='off' name = 'addmore[]' value='" + namelist[i] + "'> <span style='font-size:24px;'>" + namelist[i] + "</span></label>";
-            }
-    }
-
-    document.getElementById("namelist").innerHTML = text;
 
     $(document).ready(function () {
         $(".add-more").click(function () {

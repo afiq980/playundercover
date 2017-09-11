@@ -106,8 +106,36 @@ def process_register(request):
 
 
 def quickplay(request):
-    return render(request, 'quickplay.html', {})
+    if not request.user.is_authenticated():
+        return render(request, 'quickplay.html', {'logged_in': "false"})
+    else:
+        current_user = request.user
+        custom_user = CustomUser.objects.get(user=current_user)
+        namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+        namelist = []
+        for name_object in namelist_objects:
+            namelist.append(str(name_object[0]))
 
+        return render(request, 'quickplay.html', {'logged_in': "true",
+                                                  "name_list": namelist})
+
+
+def quickplay_with_error(request, error_message):
+    if not request.user.is_authenticated():
+        return render(request, 'quickplay.html', {'logged_in': "false",
+                                                  "error_message":error_message})
+    else:
+        current_user = request.user
+        custom_user = CustomUser.objects.get(user=current_user)
+        namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+        namelist = []
+        for name_object in namelist_objects:
+            namelist.append(str(name_object[0]))
+
+        return render(request, 'quickplay.html', {'logged_in': "true",
+                                                  "name_list": namelist,
+                                                  "error_message": error_message})
+    
 
 def register_players(request):
     player_names = request.POST.getlist('addmore[]')
@@ -119,19 +147,19 @@ def register_players(request):
 
     if len(player_names) != len(set(player_names)):
         error_message = "Player names must be unique."
-        return render(request, 'quickplay.html', {"error_message": error_message})
+        return quickplay_with_error(request, error_message)
 
     if int(number_of_u) + int(number_of_w) >= len(player_names):
         error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
     if int(number_of_u) + int(number_of_w) == 0:
         error_message = "There must be at least 1 of either Undercover or Mr White."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
-    if int(number_of_u) < 0 or  int(number_of_w) < 0:
+    if int(number_of_u) < 0 or int(number_of_w) < 0:
         error_message = "Number of Undercovers and/or Mr White cannot be negative."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
