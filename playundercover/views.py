@@ -163,8 +163,12 @@ def process_register_players(request, player_names, number_of_u, number_of_w):
     if player_names[-1] == "":
         player_names = player_names[:-1] # because last item is an extra blank item in list
 
+    player_names_without_blank_names = []
     for name in player_names:
         name = name.replace(" ", "")
+        player_names_without_blank_names.append(name)
+
+    player_names = player_names_without_blank_names
 
     while "" in player_names: player_names.remove("")
 
