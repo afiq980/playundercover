@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^player-elim/', views.player_elim, name='player_elim'),
     url(r'^replay/', views.replay, name='replay'),
     url(r'^name-list/', views.name_list, name='name_list'),
-    url(r'^process-name-list/', views.process_name_list, name='process_name_list')
+    url(r'^process-name-list/', views.process_name_list, name='process_name_list'),
+    url(r'^process-pair-feedback/', views.process_pair_feedback, name='process_pair_feedback'),
 ]

@@ -3,6 +3,7 @@ import random
 from random import shuffle
 import ast
 import json
+import datetime
 from copy import deepcopy
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -11,7 +12,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.template.context_processors import csrf
 from django.contrib.auth.models import User
-from models import Season, Pair, UserPair, Namelist, CustomUser
+from django.http import HttpResponse
+from models import Season, Pair, UserPair, Namelist, CustomUser, PairFeedback
 from django.contrib.auth.decorators import login_required
 
 
@@ -486,3 +488,14 @@ def process_name_list(request):
     message = "Name list updated."
 
     return render(request, 'player-list.html', {"name_list": namelist, "error_message": message})
+
+
+def process_pair_feedback(request):
+    if request.method == 'POST':
+        feedback = ast.literal_eval(str(request.POST['feedback'].encode('utf-8')))
+        c_word = str(request.POST['c_word'].encode('utf-8'))
+        u_word = str(request.POST['u_word'].encode('utf-8'))
+
+        PairFeedback.objects.create(pair=(c_word+" | "+u_word), feedback=feedback, datetime=datetime.datetime.now())
+
+    return HttpResponse('')

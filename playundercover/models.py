@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.db.models.signals import post_save
 import datetime
 
@@ -51,9 +52,9 @@ class Namelist(models.Model):
 
 class PairFeedback(models.Model):
     id = models.AutoField(primary_key=True)
-    pair = models.ForeignKey(Pair)
+    pair = models.CharField(max_length=83)
     feedback = models.BooleanField()
-    models.DateField(default=datetime.datetime.now())
+    datetime = models.DateTimeField()
 
     class Meta:
         app_label = 'playundercover'
