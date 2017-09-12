@@ -209,8 +209,8 @@
     var error = "{{ error_message | safe }}";
     var text = "";
     if (error.length > 0) {
-        text += "<div class='alert alert-success' style='border-radius: 0 !important; border: 0; background: #000000; color: #ffffff; text-align: center;'>";
-        text += "<strong>" + error + "</strong>";
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
+        text += error;
         text += "</div>";
     }
     document.getElementById("Error").innerHTML = text;
