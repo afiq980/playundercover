@@ -143,8 +143,9 @@ def register_players(request):
     player_names = request.POST.getlist('addmore[]')
     number_of_u = request.POST['uNumber']
     number_of_w = request.POST['wNumber']
+    error_message = ""
 
-    return process_register_players(request, player_names, number_of_u, number_of_w)
+    return process_register_players(request, player_names, number_of_u, number_of_w, error_message)
 
 
 def register_players_new_word(request):
@@ -152,11 +153,12 @@ def register_players_new_word(request):
     player_names = ast.literal_eval(player_names)
     number_of_u = request.POST['uNumber']
     number_of_w = request.POST['wNumber']
+    error_message = "New words assigned."
 
-    return process_register_players(request, player_names, number_of_u, number_of_w)
+    return process_register_players(request, player_names, number_of_u, number_of_w, error_message)
 
 
-def process_register_players(request, player_names, number_of_u, number_of_w):
+def process_register_players(request, player_names, number_of_u, number_of_w, error_message):
 
     player_names_copy = deepcopy(player_names) # used to restart page when users want a new word
 
@@ -206,7 +208,8 @@ def process_register_players(request, player_names, number_of_u, number_of_w):
                                                 "u_word": u_word,
                                                 "player_names": player_names_copy,
                                                 "number_of_u": number_of_u,
-                                                "number_of_w": number_of_w})
+                                                "number_of_w": number_of_w,
+                                                "error_message": error_message})
 
 
 # returns list of lists - [[civilians],[undercover],[white]]

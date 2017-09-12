@@ -171,7 +171,7 @@
 
         <a href="{% url 'social:begin' 'google-oauth2' %}" type="submit"
            class="center-block btn btn-primary btn-responsive signButton"
-           style="height: 50%; color: #ffffff; background: #4285F4">GOOGLE SIGN IN</a>
+           style="height: 50%;">GOOGLE SIGN IN</a>
 
         <p class="row center-block text-container"
            style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; margin-top: 32px;">
@@ -242,7 +242,7 @@
     var error = "{{error_message|safe}}";
     var text = "";
     if (error.length > 0) {
-        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF;'>";
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
         text += error;
         text += "</div>";
     }

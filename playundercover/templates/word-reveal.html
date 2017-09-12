@@ -188,6 +188,8 @@
     <!-- CLICK TO REVEAL WORDS -->
     <div class="row green-container">
 
+        <p id="Error" style="margin-bottom: 30px;"></p>
+
         <div class="row center-block header-container">
             ASSIGNED WORDS
         </div>
@@ -275,6 +277,15 @@
     var finalText = textList.join('');
 
     document.getElementById("Reveal").innerHTML = finalText;
+
+    var error = "{{ error_message | safe }}";
+    var text = "";
+    if(error.length > 0){
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
+        text += error;
+        text += "</div>";
+    }
+    document.getElementById("Error").innerHTML = text;
 
 
     $(document).ready(function () {
