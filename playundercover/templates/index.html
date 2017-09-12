@@ -103,7 +103,7 @@
         height: 50%;
         border: 1px solid #d9b08c;
         color: #d9b08c;
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .qpButton:hover {
@@ -115,11 +115,11 @@
     }
 
     .header-container {
-        width: 70%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
-        text-align: center;
+        text-align: left;
         margin-top: 32px;
         margin-bottom: 5px;
     }
@@ -230,7 +230,7 @@
                        style='font-family: Open Sans, sans-serif;'>
 
                 <button type="submit" class="btn btn-primary btn-responsive submitButton"
-                        style="width: 40%; height: 32px;">
+                        style="width: 40%; height: 32px; margin-top: 10px;">
                     SUBMIT
                 </button>
             </div>
@@ -248,12 +248,14 @@
     var text = "";
 
     if(!logged){
-        text += '<a href="/login/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">LOG IN</a>' +
+        text += '<a href="/login/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">SIGN IN</a>' +
             '<a href="/register/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">REGISTER</a>' +
             '<a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">QUICK PLAY</a>'
     } else {
-        text += '<a href="/name-list/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">NAME LIST</a>' +
-            '<a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">PLAY NOW</a>'
+        text += '<a href="/quickplay/" class="center-block btn btn-primary qpButton" role="button">QUICK PLAY</a>' +
+            '<a href="/name-list/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">NAME LIST</a>' +
+            '<a href="/logout/" class="center-block btn btn-primary btn-responsive reglogButton" role="button">LOG OUT</a>'
+
     }
 
     document.getElementById("options").innerHTML = text;

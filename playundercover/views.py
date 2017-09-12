@@ -3,14 +3,17 @@ import random
 from random import shuffle
 import ast
 import json
+import datetime
 from copy import deepcopy
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.shortcuts import redirect
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.template.context_processors import csrf
 from django.contrib.auth.models import User
-from models import Season, Pair, UserPair, Namelist, CustomUser
+from django.http import HttpResponse
+from models import Season, Pair, UserPair, Namelist, CustomUser, PairFeedback
 from django.contrib.auth.decorators import login_required
 
 
@@ -22,7 +25,16 @@ def home(request):
 
 
 def login(request):
-    return render(request, 'login.html', {})
+    if request.user.is_authenticated():
+        return home(request)
+    else:
+        return render(request, 'login.html', {})
+
+
+def logout(request):
+    if request.user.is_authenticated():
+        auth_logout(request)
+    return home(request)
 
 
 def authentication(request):
@@ -55,7 +67,10 @@ def authentication(request):
 
 
 def register(request):
-    return render(request, 'register.html', {})
+    if request.user.is_authenticated():
+        return home(request)
+    else:
+        return render(request, 'register.html', {})
 
 
 def process_register(request):
@@ -93,32 +108,93 @@ def process_register(request):
 
 
 def quickplay(request):
-    return render(request, 'quickplay.html', {})
+    if not request.user.is_authenticated():
+        return render(request, 'quickplay.html', {'logged_in': "false",
+                                                  "name_list": []})
+    else:
+        current_user = request.user
+        custom_user = CustomUser.objects.get(user=current_user)
+        namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+        namelist = []
+        for name_object in namelist_objects:
+            namelist.append(str(name_object[0]))
+
+        return render(request, 'quickplay.html', {'logged_in': "true",
+                                                  "name_list": namelist})
+
+
+def quickplay_with_error(request, error_message):
+    if not request.user.is_authenticated():
+        return render(request, 'quickplay.html', {'logged_in': "false",
+                                                  "error_message":error_message,
+                                                  "name_list": []})
+    else:
+        current_user = request.user
+        custom_user = CustomUser.objects.get(user=current_user)
+        namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+        namelist = []
+        for name_object in namelist_objects:
+            namelist.append(str(name_object[0]))
+
+        return render(request, 'quickplay.html', {'logged_in': "true",
+                                                  "name_list": namelist,
+                                                  "error_message": error_message})
 
 
 def register_players(request):
     player_names = request.POST.getlist('addmore[]')
     number_of_u = request.POST['uNumber']
     number_of_w = request.POST['wNumber']
+    error_message = ""
+
+    return process_register_players(request, player_names, number_of_u, number_of_w, error_message)
+
+
+def register_players_new_word(request):
+    player_names = request.POST['addmore[]']
+    player_names = ast.literal_eval(player_names)
+    number_of_u = request.POST['uNumber']
+    number_of_w = request.POST['wNumber']
+    error_message = "New words assigned."
+
+    return process_register_players(request, player_names, number_of_u, number_of_w, error_message)
+
+
+def process_register_players(request, player_names, number_of_u, number_of_w, error_message):
+
+    player_names_copy = deepcopy(player_names) # used to restart page when users want a new word
 
     if player_names[-1] == "":
         player_names = player_names[:-1] # because last item is an extra blank item in list
 
+    player_names_without_blank_names = []
+    for name in player_names:
+        name = name.replace(" ", "")
+        player_names_without_blank_names.append(name)
+
+    player_names = player_names_without_blank_names
+
+    while "" in player_names: player_names.remove("")
+
     if len(player_names) != len(set(player_names)):
         error_message = "Player names must be unique."
-        return render(request, 'quickplay.html', {"error_message": error_message})
+        return quickplay_with_error(request, error_message)
+
+    if len(player_names) < 3:
+        error_message = "There must be at least 3 players."
+        return quickplay_with_error(request, error_message)
 
     if int(number_of_u) + int(number_of_w) >= len(player_names):
         error_message = "Total number of Undercovers and Mr Whites must be less than the number of players."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
     if int(number_of_u) + int(number_of_w) == 0:
         error_message = "There must be at least 1 of either Undercover or Mr White."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
-    if int(number_of_u) < 0 or  int(number_of_w) < 0:
+    if int(number_of_u) < 0 or int(number_of_w) < 0:
         error_message = "Number of Undercovers and/or Mr White cannot be negative."
-        return render(request, 'quickplay.html', {"error_message":error_message})
+        return quickplay_with_error(request, error_message)
 
     player_assignment = assign_cuw(player_names, int(number_of_u), int(number_of_w))
     word_assignment = assign_word(request, player_assignment,None,None)
@@ -128,10 +204,14 @@ def register_players(request):
     player_assignment = json.dumps(player_assignment)
     word_assignment = json.dumps(word_assignment)
 
-    return render(request, 'word-reveal.html', {"player_assignment":player_assignment,
-                                                "word_assignment":word_assignment,
-                                                "c_word":c_word,
-                                                "u_word":u_word})
+    return render(request, 'word-reveal.html', {"player_assignment": player_assignment,
+                                                "word_assignment": word_assignment,
+                                                "c_word": c_word,
+                                                "u_word": u_word,
+                                                "player_names": player_names_copy,
+                                                "number_of_u": number_of_u,
+                                                "number_of_w": number_of_w,
+                                                "error_message": error_message})
 
 
 # returns list of lists - [[civilians],[undercover],[white]]
@@ -166,9 +246,9 @@ def assign_word(request, cuw_assignment, difficulty_level, season_name):
 
     word1_index = random.randint(0, 1)
     word2_index = 1-word1_index
-    word1 = word_pair_list[word1_index]
-    word2 = word_pair_list[word2_index]
-    word3 = "You are Mr White"
+    word1 = word_pair_list[word1_index].upper()
+    word2 = word_pair_list[word2_index].upper()
+    word3 = "YOU ARE MR.WHITE"
     choose_pair_list = [word1, word2, word3]
 
     word_assignment = []
@@ -295,14 +375,25 @@ def player_elim(request):
     players_to_elim = request.POST.getlist('players_to_elim')
     cuw_list_str = request.POST['cuw_list']
     cuw_list = ast.literal_eval(str(cuw_list_str.encode('utf-8')))
-    c_word = request.POST['c_word']
-    u_word = request.POST['u_word']
+    c_word = request.POST['c_word'].upper()
+    u_word = request.POST['u_word'].upper()
 
     player_list = []
     player_list.extend(cuw_list[0])
     player_list.extend(cuw_list[1])
     player_list.extend(cuw_list[2])
     player_list = json.dumps(player_list)
+
+    exposed_c = []
+    exposed_u = []
+    exposed_w = []
+    for player in players_to_elim:
+        if player in cuw_list[0]:
+            exposed_c.append(player)
+        if player in cuw_list[1]:
+            exposed_u.append(player)
+        if player in cuw_list[2]:
+            exposed_w.append(player)
 
     # remove the names of players to elim
     for player_to_elim in players_to_elim:
@@ -323,7 +414,7 @@ def player_elim(request):
             else:
                 winner_list += cuw_list[0][i] + ", "
 
-        return render(request, 'gameover.html', {"winner_group": "CIVILIANS",
+        return render(request, 'gameover.html', {"winner_group": "Civilians",
                                                  "winner_list": winner_list,
                                                  "c_word": c_word,
                                                  "u_word": u_word,
@@ -340,7 +431,7 @@ def player_elim(request):
             else:
                 winner_list += cuw_list[2][i] + ", "
 
-        return render(request, 'gameover.html', {"winner_group": "UNDERCOVERS/MR WHITES",
+        return render(request, 'gameover.html', {"winner_group": "Undercovers/Mr Whites",
                                                  "winner_list": winner_list,
                                                  "c_word": c_word,
                                                  "u_word": u_word,
@@ -350,7 +441,10 @@ def player_elim(request):
         played_names = [next_player]
         return render(request, 'turn-reveal.html', {"next_player": next_player,
                                                     "cuw_list": cuw_list,
-                                                    "played_names": played_names})
+                                                    "played_names": played_names,
+                                                    "exposed_c": exposed_c,
+                                                    "exposed_u": exposed_u,
+                                                    "exposed_w": exposed_w})
 
 
 def replay(request):
@@ -369,7 +463,6 @@ def name_list(request):
     namelist = []
     for name_object in namelist_objects:
         namelist.append(str(name_object[0]))
-    print(namelist)
 
     return render(request, 'player-list.html', {"name_list": namelist})
 
@@ -382,7 +475,27 @@ def process_name_list(request):
     Namelist.objects.filter(custom_user=custom_user).delete()
 
     for name in namelist:
+        name = name.replace(" ", "")
         if len(name) > 0:
             Namelist.objects.create(custom_user=custom_user, name=name)
 
-    return name_list(request)
+    namelist_objects = list(Namelist.objects.filter(custom_user=custom_user).values_list('name'))
+
+    namelist = []
+    for name_object in namelist_objects:
+        namelist.append(str(name_object[0]))
+
+    message = "Name list updated."
+
+    return render(request, 'player-list.html', {"name_list": namelist, "error_message": message})
+
+
+def process_pair_feedback(request):
+    if request.method == 'POST':
+        feedback = ast.literal_eval(str(request.POST['feedback'].encode('utf-8')))
+        c_word = str(request.POST['c_word'].encode('utf-8'))
+        u_word = str(request.POST['u_word'].encode('utf-8'))
+
+        PairFeedback.objects.create(pair=(c_word+" | "+u_word), feedback=feedback, datetime=datetime.datetime.now())
+
+    return HttpResponse('')

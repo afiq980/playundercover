@@ -78,19 +78,20 @@
     }
 
     .nextButton {
-        background: #2c3531;
-        height: 50%;
-        border: 1px solid #d9b08c;
-        color: #d9b08c;
-        font-size: 24px;
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
+        margin-top: 32px;
     }
 
     .nextButton:hover {
-        background: #d9b08c;
-        height: 50%;
-        border: 1px solid #2c3531;
-        color: #2c3531;
-        font-size: 24px;
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #116466;
+        color: #116466;
+        font-size: 20px;
     }
 
     .header-container {
@@ -146,13 +147,11 @@
             </div>
             <div class="row center-block text-container"
                  style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
-                Please enter the player names below. We recommend to have a minimum of 4 players.
+                Min. no. of players recommended is 4.
             </div>
 
 
             <div class="row">
-
-                <p id="namelist" style=""></p>
 
                 <div class="control-group input-group" style="width:66.5%; margin: 0 auto;">
                     <input type="text" name="addmore[]" class="form-control"
@@ -210,18 +209,18 @@
                 SETTINGS
             </div>
             <div class="row center-block text-container" style="font-size: 16px; text-align: left; color: #d1e8e2; ">
-                Please select the number of Undercovers and Mr.Whites below.
+                Click to select no. of undercovers and Mr. Whites.
             </div>
 
             <div class="row center-block header-container">
-                UNDERCOVERS
+                NO. OF UNDERCOVERS
                 <input class='btn btn-default btn-sm btn-responsive' type='number' autocomplete='off' name='uNumber'
                        placeholder='No. of Undercovers' value='1'
                        style="height: 52px;font-family: Open Sans, sans-serif; width: 100%; ">
             </div>
 
             <div class="row center-block header-container">
-                MR. WHITES
+                NO. OF MR. WHITES
 
                 <input class='btn btn-default btn-sm btn-responsive' type='number' autocomplete='off' name='wNumber'
                        placeholder='No. of Mr Whites' value='0'
@@ -244,20 +243,6 @@
 
 <script>
 
-    var logged = {{ logged_in | safe }};
-    var text = "";
-
-    if(logged == true) {
-        text += '<div class="control-group input-group" style="width:66.5%; margin: 0 auto;">'
-        namelist = {{ name_list | safe }};
-            for(var i=0;i<namelist.length;i++){
-                text += "<label class='btn btn-primary center-block' style='width: 100%; border-radius: 3px !important; height: 52px; margin-bottom: 5px;'><input type='checkbox' autocomplete='off' name = 'addmore[]' value='" + namelist[i] + "'> <span style='font-size:24px;'>" + namelist[i] + "</span></label>";
-            }
-        text += '</div>'
-    }
-
-    document.getElementById("namelist").innerHTML = text;
-
     $(document).ready(function () {
         $(".add-more").click(function () {
             var html = $(".copy").html();
@@ -271,8 +256,8 @@
     var error = "{{ error_message | safe }}";
     var text = "";
     if(error.length > 0){
-        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
-        text += error;
+        text += "<div class='alert alert-success' style='border-radius: 0 !important; border: 0; background: #000000; color: #ffffff; text-align: center;'>";
+        text += "<strong>" + error + "</strong>";
         text += "</div>";
     }
     document.getElementById("Error").innerHTML = text;

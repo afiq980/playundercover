@@ -80,12 +80,29 @@
     }
 
     .regButton {
-      background: #116466;
-      height: 52px;
-      border: 1px solid #d1e8e2;
-      color: #d1e8e2;
-      font-size: 20px;
-      margin-top: 32px;
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
+        margin-top: 32px;
+    }
+
+    .regButton:hover {
+        background: #d1e8e2;
+        height: 52px;
+        border: 1px solid #116466;
+        color: #116466;
+        font-size: 20px;
+    }
+
+    .signButton {
+        background: #116466;
+        height: 52px;
+        border: 1px solid #d1e8e2;
+        color: #d1e8e2;
+        font-size: 20px;
+        margin-top: 32px;
     }
 
     .signButton:hover {
@@ -107,11 +124,11 @@
     }
 
     .header-container {
-        width: 70%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
-        text-align: center;
+        text-align: left;
         margin-top: 32px;
         margin-bottom: 5px;
     }
@@ -169,6 +186,15 @@
         <!-- ERROR MESSAGE -->
         <p id="Error"></p>
 
+        <a href="{% url 'social:begin' 'google-oauth2' %}" type="submit"
+           class="center-block btn btn-primary btn-responsive signButton"
+           style="height: 50%;">GOOGLE SIGN IN</a>
+
+        <p class="row center-block text-container"
+           style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; margin-top: 32px;">
+            or register with your email below
+        </p>
+
         <div class="row center-block header2-container">
             EMAIL
         </div>
@@ -179,21 +205,22 @@
                        style='font-family: Open Sans, sans-serif;height: 52px; width: 70%; margin: 0 auto;'>
             </div>
 
-        <div class="row center-block header2-container">
-            PASSWORD
-        </div>
+            <div class="row center-block header2-container">
+                PASSWORD
+            </div>
 
             <div class="form-group">
                 <input type="password" class="form-control" id="feedback" placeholder="Password" name="password1"
                        style='font-family: Open Sans, sans-serif; height: 52px; width: 70%; margin: 0 auto;'>
             </div>
 
-        <div class="row center-block header2-container">
-            CONFIRM PASSWORD
-        </div>
+            <div class="row center-block header2-container">
+                CONFIRM PASSWORD
+            </div>
 
             <div class="form-group">
-                <input type="password" class="form-control" id="feedback" placeholder="Confirm password" name="password2"
+                <input type="password" class="form-control" id="feedback" placeholder="Confirm password"
+                       name="password2"
                        style='font-family: Open Sans, sans-serif; height: 52px; width: 70%; margin: 0 auto;'>
             </div>
 
@@ -201,10 +228,10 @@
         </form>
 
 
-        <a href="/login/" class="row center-block text-container" style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px;">
+        <a href="/login/" class="row center-block text-container"
+           style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; text-decoration: underline;">
             Already registered? Click here to sign in.
         </a>
-
 
 
     </div> <!-- SIGN IN -->
@@ -222,18 +249,20 @@
             Open Source Libraries <br>
             Feedback <br>
 
-            <form>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="feedback" placeholder="Click to type"
-                           style='font-family: Open Sans, sans-serif;'>
-                </div>
-            </form>
-
-            <button type="button" class=" btn btn-primary btn-responsive submitButton"
-                    style="width: 40%; height: 32px;">SUBMIT
-            </button>
-
         </div>
+
+        <form action='/feedback/' method='post'>
+            <div class="row center-block text-container form-group">
+                <input type="text" class="form-control" id="feedback" placeholder="Click to type"
+                       style='font-family: Open Sans, sans-serif;'>
+
+                <button type="submit" class="btn btn-primary btn-responsive submitButton"
+                        style="width: 40%; height: 32px; margin-top: 10px;">
+                    SUBMIT
+                </button>
+            </div>
+        </form>
+
 
     </div> <!-- FEEDBACK -->
 
@@ -243,7 +272,7 @@
     var error = "{{error_message|safe}}";
     var text = "";
     if (error.length > 0) {
-        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF;'>";
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
         text += error;
         text += "</div>";
     }

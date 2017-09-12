@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.db.models.signals import post_save
+import datetime
 
 class Season(models.Model):
     id = models.AutoField(primary_key=True)
@@ -43,6 +45,16 @@ class Namelist(models.Model):
     id = models.AutoField(primary_key=True)
     custom_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=14)
+
+    class Meta:
+        app_label = 'playundercover'
+
+
+class PairFeedback(models.Model):
+    id = models.AutoField(primary_key=True)
+    pair = models.CharField(max_length=83)
+    feedback = models.BooleanField()
+    datetime = models.DateTimeField()
 
     class Meta:
         app_label = 'playundercover'

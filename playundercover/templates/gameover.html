@@ -193,12 +193,15 @@
     <!-- ROLE REVEAL -->
     <div class="row green-container">
 
+        <p id="Error"></p>
+
         <div class="row center-block header-container">
-            GAME OVER, {{ winner_group }} WON, CONGRATULATIONS {{ winner_list }}!
+            GAME OVER
         </div>
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
+            {{ winner_group }} won, congratulations {{ winner_list }}! <br>
             See below for words assigned to the roles.
         </div>
 
@@ -233,7 +236,7 @@
 
             <div class="card card-block text-container role"
                  style="font-size: 16px; text-align: center; color: #d9b08c; margin-bottom: 32px;">
-                No words assigned
+                NO WORDS ASSIGNED
             </div>
 
         </div>
@@ -258,21 +261,28 @@
             FEEDBACK
         </div>
 
-        <form action="grade.php" method="post" id="quiz">
+        <form id="process_pair_feedback">{% csrf_token %}
             <div class="row center-block text-container"
                  style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
                 Your feedback is important to us as we hope to improve. Please rate the set of words used in this
                 round.
             </div>
+
+            <div class="row center-block" style="width: 80%;">
+                <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
+                <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
+
+                <button type="submit" id="feedback" name="feedback" value="True" class=" btn btn-primary btn-responsive feedbackButton"
+                        style="width: 45%; height: 32px;margin: 0 auto;margin-bottom: 32px;">GOOD
+                </button>
+
+                <button type="submit" id="feedback" name="feedback" value="False" class=" btn btn-primary btn-responsive feedbackButton"
+                        style="width: 45%; height: 32px;margin: 0 auto; margin-bottom: 32px;">BAD
+                </button>
+            </div>
         </form>
 
-        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
-                style="width: 40%; height: 32px;margin: 0 auto;margin-bottom: 32px;">GOOD
-        </button>
 
-        <button type="button" class=" btn btn-primary btn-responsive feedbackButton"
-                style="width: 40%; height: 32px;margin: 0 auto; margin-bottom: 32px;">BAD
-        </button>
     </div>
 
 </div>
@@ -298,6 +308,26 @@
         text += "</div>";
     }
     document.getElementById("Error").innerHTML = text;
+
+
+    $(document).on('submit', '#process_pair_feedback', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/process-pair-feedback/',
+            data: {
+                feedback: $('#feedback').val(),
+                c_word: $('#c_word').val(),
+                u_word: $('#u_word').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function () {
+                alert("Thank you for your feedback!");
+            }
+        });
+
+    });
 
 </script>
 

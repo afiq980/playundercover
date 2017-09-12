@@ -107,11 +107,11 @@
     }
 
     .header-container {
-        width: 70%;
+        width: 80%;
         color: #d9b08c;
         font-size: 20px;
         letter-spacing: 5px;
-        text-align: center;
+        text-align: left;
         margin-top: 32px;
         margin-bottom: 5px;
     }
@@ -169,9 +169,12 @@
         <!-- ERROR MESSAGE -->
         <p id="Error"></p>
 
-        <a href="{% url 'social:begin' 'google-oauth2' %}" type="submit" class="center-block btn btn-primary btn-responsive signButton" style="height: 50%; color: #ffffff; background: #4285F4" >GOOGLE SIGN IN</a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}" type="submit"
+           class="center-block btn btn-primary btn-responsive signButton"
+           style="height: 50%;">GOOGLE SIGN IN</a>
 
-        <p class="row center-block text-container" style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; margin-top: 32px;">
+        <p class="row center-block text-container"
+           style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; margin-top: 32px;">
             or sign in with your email below
         </p>
 
@@ -196,10 +199,10 @@
         </form>
 
 
-        <a href="/register/" class="row center-block text-container" style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px;">
+        <a href="/register/" class="row center-block text-container"
+           style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; text-decoration: underline;">
             Not registered? Click here to sign up.
         </a>
-
 
 
     </div> <!-- SIGN IN -->
@@ -216,18 +219,20 @@
             Open Source Libraries <br>
             Feedback <br>
 
-            <form>
-                <div class="form-group">
+        </div>
+
+            <form action='/feedback/' method='post'>
+                <div class="row center-block text-container form-group">
                     <input type="text" class="form-control" id="feedback" placeholder="Click to type"
                            style='font-family: Open Sans, sans-serif;'>
+
+                    <button type="submit" class="btn btn-primary btn-responsive submitButton"
+                            style="width: 40%; height: 32px; margin-top: 10px;">
+                        SUBMIT
+                    </button>
                 </div>
             </form>
 
-            <button type="button" class=" btn btn-primary btn-responsive submitButton"
-                    style="width: 40%; height: 32px;">SUBMIT
-            </button>
-
-        </div>
 
     </div> <!-- FEEDBACK -->
 
@@ -237,7 +242,7 @@
     var error = "{{error_message|safe}}";
     var text = "";
     if (error.length > 0) {
-        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF;'>";
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
         text += error;
         text += "</div>";
     }

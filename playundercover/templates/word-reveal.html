@@ -188,6 +188,8 @@
     <!-- CLICK TO REVEAL WORDS -->
     <div class="row green-container">
 
+        <p id="Error" style="margin-bottom: 30px;"></p>
+
         <div class="row center-block header-container">
             ASSIGNED WORDS
         </div>
@@ -217,10 +219,18 @@
                     style="margin-top: 32px;">START
             </button><!-- START BUTTON -->
 
-            <div class="row center-block text-container"
-                 style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; ">
-                Click here for a new set of words.
-            </div>
+        </form>
+
+        <form id="newWord" action="/register_players_new_word/" method="post"> {% csrf_token %}
+            <input id="addmore[]" type="hidden" name="addmore[]" value="{{ player_names | safe }}">
+            <input id="uNumber" type="hidden" name="uNumber" value="{{ number_of_u | safe}}">
+            <input id="wNumber" type="hidden" name="wNumber" value="{{ number_of_w | safe}}">
+            <a href="#" onclick="document.getElementById('newWord').submit()">
+                <div class="row center-block text-container"
+                     style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; text-decoration: underline;">
+                    Click here to change to a new set of words
+                </div>
+            </a>
         </form>
 
     </div>
@@ -267,6 +277,15 @@
     var finalText = textList.join('');
 
     document.getElementById("Reveal").innerHTML = finalText;
+
+    var error = "{{ error_message | safe }}";
+    var text = "";
+    if(error.length > 0){
+        text += "<div class='alert alert-warning' style='border-radius: 0 !important; background: #FFFFFF; color: #2c3531; text-align: center;'>";
+        text += error;
+        text += "</div>";
+    }
+    document.getElementById("Error").innerHTML = text;
 
 
     $(document).ready(function () {
