@@ -7,7 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
@@ -170,17 +169,16 @@
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: left; color: #d1e8e2; margin-bottom: 32px; ">
-            You may collectively choose how many players you want to reveal and eliminate for this round - it could be one or more players, or even none.
+            You may choose to eliminate none, 1 or more than 1 player. Select the player name(s) to eliminate and click
+            "Eliminate".
         </div>
 
-        <div class='row btn-group-vertical center-block' data-toggle='buttons'>
-            <form id="elim_form" action="/player-elim/" method="post">{% csrf_token %}
-                <input id="data" type="hidden" name="cuw_list" value="{{ cuw_list }}">
-                <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
-                <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
-                <p id="Players"></p>
-            </form>
-        </div>
+        <form id="elim_form" action="/player-elim/" method="post">{% csrf_token %}
+            <input id="data" type="hidden" name="cuw_list" value="{{ cuw_list }}">
+            <input id="c_word" type="hidden" name="c_word" value="{{ c_word }}">
+            <input id="u_word" type="hidden" name="u_word" value="{{ u_word }}">
+            <p id="Players"></p>
+        </form>
 
         <!-- CLICK TO REVEAL WORDS -->
     </div>
@@ -191,15 +189,20 @@
 
         <!-- DO NOT DELETE -->
 
-            <!-- DO NOT DELETE -->
+        <!-- DO NOT DELETE -->
 
-            <button type="submit" form="elim_form" value="send form" class="center-block btn btn-primary btn-responsive nextButton"
-                    style="margin-top: 32px;">ELIMINATE
-            </button><!-- START BUTTON -->
+        <button type="submit" form="elim_form" value="send form"
+                class="center-block btn btn-primary btn-responsive nextButton"
+                style="margin-top: 32px;">ELIMINATE
+        </button><!-- START BUTTON -->
 
         <div class="row center-block text-container"
              style="font-size: 16px; text-align: center; color: #d9b08c; margin-top: 14px; margin-bottom: 32px; ">
             Click here to restart game.
+        </div>
+
+        <div class="row btn-group-vertical center-block" data-toggle="buttons">
+
         </div>
 
     </div>
@@ -231,7 +234,10 @@
     }
 
     textList = shuffle(textList);
-    var finalText = textList.join('');
+    var finalText = "<div class='row btn-group-vertical center-block' style='width: 70%;' data-toggle='buttons'>";
+    var inText = textList.join('');
+    finalText += inText
+    finalText += "</div>"
     document.getElementById("Players").innerHTML = finalText;
 
 </script>
