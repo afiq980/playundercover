@@ -4,6 +4,7 @@ from random import shuffle
 import ast
 import json
 import datetime
+from collections import OrderedDict
 from copy import deepcopy
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -473,6 +474,8 @@ def process_name_list(request):
     current_user = request.user
     custom_user = CustomUser.objects.get(user=current_user)
     Namelist.objects.filter(custom_user=custom_user).delete()
+
+    namelist = list(OrderedDict.fromkeys(namelist))
 
     for name in namelist:
         name = name.replace(" ", "")
